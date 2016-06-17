@@ -1,8 +1,41 @@
 package com.Akoot.foxgame;
 
 import static org.lwjgl.glfw.Callbacks.errorCallbackPrint;
-import static org.lwjgl.glfw.GLFW.*;
-import static org.lwjgl.opengl.GL11.*;
+import static org.lwjgl.glfw.GLFW.GLFW_KEY_ESCAPE;
+import static org.lwjgl.glfw.GLFW.GLFW_RELEASE;
+import static org.lwjgl.glfw.GLFW.GLFW_RESIZABLE;
+import static org.lwjgl.glfw.GLFW.GLFW_VISIBLE;
+import static org.lwjgl.glfw.GLFW.glfwCreateWindow;
+import static org.lwjgl.glfw.GLFW.glfwDefaultWindowHints;
+import static org.lwjgl.glfw.GLFW.glfwDestroyWindow;
+import static org.lwjgl.glfw.GLFW.glfwGetPrimaryMonitor;
+import static org.lwjgl.glfw.GLFW.glfwGetVideoMode;
+import static org.lwjgl.glfw.GLFW.glfwGetWindowSize;
+import static org.lwjgl.glfw.GLFW.glfwInit;
+import static org.lwjgl.glfw.GLFW.glfwMakeContextCurrent;
+import static org.lwjgl.glfw.GLFW.glfwPollEvents;
+import static org.lwjgl.glfw.GLFW.glfwSetErrorCallback;
+import static org.lwjgl.glfw.GLFW.glfwSetKeyCallback;
+import static org.lwjgl.glfw.GLFW.glfwSetWindowPos;
+import static org.lwjgl.glfw.GLFW.glfwSetWindowShouldClose;
+import static org.lwjgl.glfw.GLFW.glfwShowWindow;
+import static org.lwjgl.glfw.GLFW.glfwSwapBuffers;
+import static org.lwjgl.glfw.GLFW.glfwSwapInterval;
+import static org.lwjgl.glfw.GLFW.glfwTerminate;
+import static org.lwjgl.glfw.GLFW.glfwWindowHint;
+import static org.lwjgl.glfw.GLFW.glfwWindowShouldClose;
+import static org.lwjgl.opengl.GL11.GL_BLEND;
+import static org.lwjgl.opengl.GL11.GL_COLOR_BUFFER_BIT;
+import static org.lwjgl.opengl.GL11.GL_DEPTH_BUFFER_BIT;
+import static org.lwjgl.opengl.GL11.GL_FALSE;
+import static org.lwjgl.opengl.GL11.GL_ONE_MINUS_SRC_ALPHA;
+import static org.lwjgl.opengl.GL11.GL_SRC_ALPHA;
+import static org.lwjgl.opengl.GL11.GL_TEXTURE_2D;
+import static org.lwjgl.opengl.GL11.GL_TRUE;
+import static org.lwjgl.opengl.GL11.glBlendFunc;
+import static org.lwjgl.opengl.GL11.glClear;
+import static org.lwjgl.opengl.GL11.glClearColor;
+import static org.lwjgl.opengl.GL11.glEnable;
 import static org.lwjgl.system.MemoryUtil.NULL;
 
 import java.nio.ByteBuffer;
@@ -14,6 +47,9 @@ import org.lwjgl.glfw.GLFWKeyCallback;
 import org.lwjgl.glfw.GLFWvidmode;
 import org.lwjgl.opengl.GLContext;
 
+import com.Akoot.foxgame.event.EventHandler;
+import com.Akoot.foxgame.event.events.TickEvent;
+import com.Akoot.foxgame.event.listeners.TickListener;
 import com.Akoot.foxgame.graphics.Gui;
 import com.Akoot.foxgame.graphics.Texture;
 import com.Akoot.foxgame.util.Color;
@@ -33,15 +69,20 @@ public class Foxgame
 	public final String name = "Foxgame", fullname = name + "-" + version;
 
 	public final int initHeight = 700, initWidth = 1100;
+	
+	private static Foxgame game;
 
 	private Gui gui;
 	private Texture texture;
 
+	private EventHandler events;
+	
 	/** Run */
 	public void run()
 	{
 		/* Print message */
 		System.out.println("Hello LWJGL " + Sys.getVersion() + "!");
+		game = this;
 		try
 		{
 			init();
@@ -124,6 +165,16 @@ public class Foxgame
 		glfwGetWindowSize(window, w, h);
 		return h.getInt(0);
 	}
+	
+	public static Foxgame getFoxgame()
+	{
+		return game;
+	}
+	
+	public EventHandler getEvents()
+	{
+		return events;
+	}
 
 	/** Main game loop */
 	public void loop()
@@ -133,6 +184,10 @@ public class Foxgame
 
 		gui = new Gui(this);
 		texture = new Texture("assets/textures/bricks.png");
+		events = new EventHandler();
+		
+		Entity harold = new Entity(this, "Harold");
+		Entity dril = new Entity(this, "@dril");
 
 		/** glState anything here */
 
@@ -242,13 +297,13 @@ public class Foxgame
 				gui.displayImage(i * size * 2, j * size * 2, size, size, texture, new Color(0x00ff00, 0.5));
 			}
 		}
-
-		gui.drawRect(0, 0, 100, 100, new Color(0xff0000, 0.1));
+		gui.drawRect(0, 0, 100, 100, new Color(0xffffff, 0.5));
 	}
 
 	/** Tick */
 	public void tick()
 	{
+		events.dispatchEvent(new TickEvent());
 	}
 
 	/** Main method of the entire program */
@@ -259,5 +314,4 @@ public class Foxgame
 		/* Launch the game */
 		new Foxgame().run();
 	}
-
 }
