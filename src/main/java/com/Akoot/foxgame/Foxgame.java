@@ -1,44 +1,22 @@
 package com.Akoot.foxgame;
 
 import static org.lwjgl.glfw.Callbacks.errorCallbackPrint;
-import static org.lwjgl.glfw.GLFW.GLFW_KEY_ESCAPE;
-import static org.lwjgl.glfw.GLFW.GLFW_RELEASE;
-import static org.lwjgl.glfw.GLFW.GLFW_RESIZABLE;
-import static org.lwjgl.glfw.GLFW.GLFW_VISIBLE;
-import static org.lwjgl.glfw.GLFW.glfwCreateWindow;
-import static org.lwjgl.glfw.GLFW.glfwDefaultWindowHints;
-import static org.lwjgl.glfw.GLFW.glfwDestroyWindow;
-import static org.lwjgl.glfw.GLFW.glfwGetPrimaryMonitor;
-import static org.lwjgl.glfw.GLFW.glfwGetVideoMode;
-import static org.lwjgl.glfw.GLFW.glfwInit;
-import static org.lwjgl.glfw.GLFW.glfwMakeContextCurrent;
-import static org.lwjgl.glfw.GLFW.glfwPollEvents;
-import static org.lwjgl.glfw.GLFW.glfwSetErrorCallback;
-import static org.lwjgl.glfw.GLFW.glfwSetKeyCallback;
-import static org.lwjgl.glfw.GLFW.glfwSetWindowPos;
-import static org.lwjgl.glfw.GLFW.glfwSetWindowShouldClose;
-import static org.lwjgl.glfw.GLFW.glfwShowWindow;
-import static org.lwjgl.glfw.GLFW.glfwSwapBuffers;
-import static org.lwjgl.glfw.GLFW.glfwSwapInterval;
-import static org.lwjgl.glfw.GLFW.glfwTerminate;
-import static org.lwjgl.glfw.GLFW.glfwWindowHint;
-import static org.lwjgl.glfw.GLFW.glfwWindowShouldClose;
-import static org.lwjgl.opengl.GL11.GL_COLOR_BUFFER_BIT;
-import static org.lwjgl.opengl.GL11.GL_DEPTH_BUFFER_BIT;
-import static org.lwjgl.opengl.GL11.GL_FALSE;
-import static org.lwjgl.opengl.GL11.GL_TRUE;
-import static org.lwjgl.opengl.GL11.glClear;
-import static org.lwjgl.opengl.GL11.glClearColor;
+import static org.lwjgl.glfw.GLFW.*;
+import static org.lwjgl.opengl.GL11.*;
 import static org.lwjgl.system.MemoryUtil.NULL;
 
 import java.nio.ByteBuffer;
 
+import org.lwjgl.BufferUtils;
 import org.lwjgl.Sys;
 import org.lwjgl.glfw.GLFWErrorCallback;
 import org.lwjgl.glfw.GLFWKeyCallback;
 import org.lwjgl.glfw.GLFWvidmode;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GLContext;
+
+import com.Akoot.foxgame.client.Gui;
+import com.Akoot.foxgame.client.Texture;
 
 public class Foxgame
 {
@@ -48,13 +26,13 @@ public class Foxgame
 
 	/** The window */
 	private long window;
-	
+
 	/* Basic information */
-	public static final String version = "0.0.1";
-	public static final String name = "Foxgame", fullname = name + "-" + version;
-	
-	public static final int height = 700, width = 1100;
-	
+	public final String version = "0.0.1";
+	public final String name = "Foxgame", fullname = name + "-" + version;
+
+	public final int initHeight = 700, initWidth = 1100;
+
 	/** Run */
 	public void run()
 	{
@@ -75,15 +53,16 @@ public class Foxgame
 			errorCallback.release();
 		}
 	}
-	
+
 	/** Init */
 	private void init()
 	{
-		 /* Setup an error callback. The default implementation will print the error message in System.err. */
+
+		/* Setup an error callback. The default implementation will print the error message in System.err. */
 		glfwSetErrorCallback(errorCallback = errorCallbackPrint(System.err));
 
 		/* Initialize GLFW. Most GLFW functions will not work before doing this. */
-		if ( glfwInit() != GL11.GL_TRUE )
+		if ( glfwInit() != GL_TRUE )
 			throw new IllegalStateException("Unable to initialize GLFW");
 
 		/* Configure the window */
@@ -92,7 +71,7 @@ public class Foxgame
 		glfwWindowHint(GLFW_RESIZABLE, GL_TRUE);
 
 		/* Create the window */
-		window = glfwCreateWindow(width, height, fullname, NULL, NULL);
+		window = glfwCreateWindow(initWidth, initHeight, fullname, NULL, NULL);
 		if (window == NULL) throw new RuntimeException("Failed to create the GLFW window.");
 
 		/* Setup a key callback. It will be called every time a key is pressed, repeated or released. */
@@ -107,20 +86,36 @@ public class Foxgame
 
 		/* Get primary monitor resolution */
 		ByteBuffer vidmode = glfwGetVideoMode(glfwGetPrimaryMonitor());
-		
+
 		/* Center of the window */
-		glfwSetWindowPos(window, (GLFWvidmode.width(vidmode) - width) / 2, (GLFWvidmode.height(vidmode) - height) / 2);
+		glfwSetWindowPos(window, (GLFWvidmode.width(vidmode) - initWidth) / 2, (GLFWvidmode.height(vidmode) - initHeight) / 2);
 
 		/* Make the openGL context current */
 		glfwMakeContextCurrent(window);
-		
+
 		/* Enable V-Sync */
 		glfwSwapInterval(1);
 
 		/* Display the window */
 		glfwShowWindow(window);
 	}
-	
+
+	public int getWidth()
+	{
+		ByteBuffer w = BufferUtils.createByteBuffer(4);
+		ByteBuffer h = BufferUtils.createByteBuffer(4);
+		glfwGetWindowSize(window, w, h);
+		return w.getInt(0);
+	}
+
+	public int getHeight()
+	{
+		ByteBuffer w = BufferUtils.createByteBuffer(4);
+		ByteBuffer h = BufferUtils.createByteBuffer(4);
+		glfwGetWindowSize(window, w, h);
+		return h.getInt(0);
+	}
+
 	/** Main game loop */
 	private void loop()
 	{
@@ -131,14 +126,31 @@ public class Foxgame
 		 */
 		GLContext.createFromCurrent();
 
-		/* Sets the clear color (RGBA)*/
-		glClearColor(1.0f, 1.0f, 1.0f, 0.0f);
+		Texture texture = new Texture("assets/textures/bricks.png");
+		Gui gui = new Gui(this);
+
+		System.out.println("ttt");
+
+		glEnable(GL_BLEND);
+		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+		glEnable(GL_TEXTURE_2D);
+
+		/* Sets the background color (RGBA)*/
+		glClearColor(1,1,1,1);
 
 		/* Run until closed */
 		while (glfwWindowShouldClose(window) == GL_FALSE)
 		{
 			/* Clear frame buffer */
-			glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+			glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);		
+			int size = 100;
+			for(int i = 0; i < 15; i++)
+			{
+				for(int j = 0; j < 8; j++)
+				{
+					gui.displayImage(i * size * 2, j * size * 2, size, size, texture, 0xffffffff);
+				}
+			}
 
 			/* Swap color buffers */
 			glfwSwapBuffers(window);
@@ -147,7 +159,7 @@ public class Foxgame
 			glfwPollEvents();
 		}
 	}
-	
+
 	/** Main method of the entire program */
 	public static void main(String[] args)
 	{

@@ -16,4 +16,6 @@ dependencies {
 	compile "org.lwjgl:lwjgl-platform:${lwjglVersion}:natives-windows"
 	compile "org.lwjgl:lwjgl-platform:${lwjglVersion}:natives-linux"
 	compile "org.lwjgl:lwjgl-platform:${lwjglVersion}:natives-osx"
+	compile 'org.apache.commons:commons-lang3:3.4'
+	compile files( 'libs/PNGDecoder.jar' )
 }
