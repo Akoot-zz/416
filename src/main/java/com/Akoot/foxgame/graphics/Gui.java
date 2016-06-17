@@ -38,12 +38,12 @@ public class Gui
 		return height /= game.getHeight() / 2;
 	}
 
-	public void displayImage(double x, double y, double width, double height, Texture texture, double alpha)
+	public void drawTexture(double x, double y, double width, double height, Texture texture, double alpha)
 	{
-		displayImage(x, y, width, height, texture, new Color(0xffffff, alpha));
+		drawTexture(x, y, width, height, texture, new Color(0xffffff, alpha));
 	}
 
-	public void displayImage(double x, double y, double width, double height, Texture texture)
+	public void drawTexture(double x, double y, double width, double height, Texture texture)
 	{
 		float left = (float) (getX(x));
 		float right = (float) (getX(x) + getWidth(width));
@@ -51,6 +51,7 @@ public class Gui
 		float top = (float) (getY(y));
 		texture.bind();
 
+		glEnable(GL_BLEND);
 		glBegin(GL_QUADS);
 		glColor4f(1, 1, 1, 1);
 
@@ -70,9 +71,10 @@ public class Gui
 		glTexCoord2f(0, 1);
 		glVertex2f(left, bottom);
 		glEnd();
+		glDisable(GL_BLEND);
 	}
 
-	public void displayImage(double x, double y, double width, double height, Texture texture, Color color)
+	public void drawTexture(double x, double y, double width, double height, Texture texture, Color color)
 	{
 		float left = (float) (getX(x));
 		float right = (float) (getX(x) + getWidth(width));

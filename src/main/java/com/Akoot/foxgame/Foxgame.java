@@ -1,8 +1,6 @@
 package com.Akoot.foxgame;
 
 import static org.lwjgl.glfw.Callbacks.errorCallbackPrint;
-import static org.lwjgl.glfw.GLFW.GLFW_KEY_ESCAPE;
-import static org.lwjgl.glfw.GLFW.GLFW_RELEASE;
 import static org.lwjgl.glfw.GLFW.GLFW_RESIZABLE;
 import static org.lwjgl.glfw.GLFW.GLFW_VISIBLE;
 import static org.lwjgl.glfw.GLFW.glfwCreateWindow;
@@ -17,7 +15,6 @@ import static org.lwjgl.glfw.GLFW.glfwPollEvents;
 import static org.lwjgl.glfw.GLFW.glfwSetErrorCallback;
 import static org.lwjgl.glfw.GLFW.glfwSetKeyCallback;
 import static org.lwjgl.glfw.GLFW.glfwSetWindowPos;
-import static org.lwjgl.glfw.GLFW.glfwSetWindowShouldClose;
 import static org.lwjgl.glfw.GLFW.glfwShowWindow;
 import static org.lwjgl.glfw.GLFW.glfwSwapBuffers;
 import static org.lwjgl.glfw.GLFW.glfwSwapInterval;
@@ -47,11 +44,14 @@ import org.lwjgl.glfw.GLFWKeyCallback;
 import org.lwjgl.glfw.GLFWvidmode;
 import org.lwjgl.opengl.GLContext;
 
+import com.Akoot.foxgame.entity.EntityPlayer;
 import com.Akoot.foxgame.event.EventHandler;
+import com.Akoot.foxgame.event.events.RenderEvent;
 import com.Akoot.foxgame.event.events.TickEvent;
-import com.Akoot.foxgame.event.listeners.TickListener;
+import com.Akoot.foxgame.graphics.Camera;
 import com.Akoot.foxgame.graphics.Gui;
 import com.Akoot.foxgame.graphics.Texture;
+import com.Akoot.foxgame.input.KeyboardHandler;
 import com.Akoot.foxgame.util.Color;
 import com.Akoot.foxgame.util.SharedLibraryLoader;
 
@@ -69,14 +69,16 @@ public class Foxgame
 	public final String name = "Foxgame", fullname = name + "-" + version;
 
 	public final int initHeight = 700, initWidth = 1100;
-	
+
 	private static Foxgame game;
 
-	private Gui gui;
+	public Gui gui;
 	private Texture texture;
 
 	private EventHandler events;
 	
+	private Camera camera;
+
 	/** Run */
 	public void run()
 	{
@@ -121,14 +123,7 @@ public class Foxgame
 		if (window == NULL) throw new RuntimeException("Failed to create the GLFW window.");
 
 		/* Setup a key callback. It will be called every time a key is pressed, repeated or released. */
-		glfwSetKeyCallback(window, keyCallback = new GLFWKeyCallback()
-		{
-			@Override
-			public void invoke(long window, int key, int scancode, int action, int mods)
-			{
-				if (key == GLFW_KEY_ESCAPE && action == GLFW_RELEASE) glfwSetWindowShouldClose(window, GL_TRUE); // We will detect this in our rendering loop
-			}
-		});
+		glfwSetKeyCallback(window, keyCallback = new KeyboardHandler()); 
 
 		/* Get primary monitor resolution */
 		ByteBuffer vidmode = glfwGetVideoMode(glfwGetPrimaryMonitor());
@@ -165,12 +160,17 @@ public class Foxgame
 		glfwGetWindowSize(window, w, h);
 		return h.getInt(0);
 	}
-	
+
 	public static Foxgame getFoxgame()
 	{
 		return game;
 	}
 	
+	public Camera getCamera()
+	{
+		return camera;
+	}
+
 	public EventHandler getEvents()
 	{
 		return events;
@@ -185,9 +185,10 @@ public class Foxgame
 		gui = new Gui(this);
 		texture = new Texture("assets/textures/bricks.png");
 		events = new EventHandler();
-		
-		Entity harold = new Entity(this, "Harold");
-		Entity dril = new Entity(this, "@dril");
+		camera = new Camera(this);
+
+		EntityPlayer harold = new EntityPlayer(this, "@Harold");
+		harold.chat("I am alive.");
 
 		/** glState anything here */
 
@@ -207,13 +208,13 @@ public class Foxgame
 		long lastTime = System.nanoTime();
 
 		/* Nanoseconds per tick */
-		double nsPerTick = 1000000000D / 20D; //20 ticks per second
+		double nsPerTick = 1000000000D / 60D; //60 ticks per second
 		/* Nanoseconds per frame */
 		double nsPerFrame = 1000000000D / 60D; //60 frames per second
 
 		/* counters */
-		int ticks = 0;
-		int frames = 0;
+		//		int ticks = 0;
+		//		int frames = 0;
 
 		/* Get milliseconds */
 		long lastTimer = System.currentTimeMillis();
@@ -239,7 +240,7 @@ public class Foxgame
 			/* Should the game tick */
 			while (deltaTicks >= 1)
 			{
-				ticks++;
+				//ticks++;
 				tick();
 				deltaTicks -= 1;
 			}
@@ -264,7 +265,7 @@ public class Foxgame
 			/* Render ONLY if it should */
 			if (shouldRender)
 			{
-				frames++;
+				//frames++;
 				/* Clear frame buffer */
 				glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);	
 				render();
@@ -279,9 +280,9 @@ public class Foxgame
 			if (System.currentTimeMillis() - lastTimer >= 1000)
 			{
 				lastTimer += 1000;
-				System.out.println(ticks + " ticks, " + frames + " frames");
-				frames = 0;
-				ticks = 0;
+				//System.out.println(ticks + " ticks, " + frames + " frames");
+				//frames = 0;
+				//ticks = 0;
 			}
 		}
 	}
@@ -294,10 +295,10 @@ public class Foxgame
 		{
 			for(int j = 0; j < 8; j++)
 			{
-				gui.displayImage(i * size * 2, j * size * 2, size, size, texture, new Color(0x00ff00, 0.5));
+				gui.drawTexture(i * size * 2, j * size * 2, size, size, texture, new Color(0xfe7777));
 			}
 		}
-		gui.drawRect(0, 0, 100, 100, new Color(0xffffff, 0.5));
+		events.dispatchEvent(new RenderEvent());
 	}
 
 	/** Tick */
