@@ -2,7 +2,7 @@ package com.Akoot.foxgame.client;
 
 import static org.lwjgl.opengl.GL11.*;
 
-import java.awt.Color;
+import com.Akoot.foxgame.util.Color;
 
 import com.Akoot.foxgame.Foxgame;
 
@@ -38,27 +38,21 @@ public class Gui
 		return height /= game.getHeight() / 2;
 	}
 	
-	public void displayImage(double x, double y, double width, double height, Texture texture)
+	public void displayImage(double x, double y, double width, double height, Texture texture, double alpha)
 	{
-		displayImage(x, y, width, height, texture, 0xffffffff);
+		displayImage(x, y, width, height, texture, new Color(0xffffff, alpha));
 	}
-
-	public void displayImage(double x, double y, double width, double height, Texture texture, int color)
+	
+	public void displayImage(double x, double y, double width, double height, Texture texture)
 	{
 		float left = (float) (getX(x));
 		float right = (float) (getX(x) + getWidth(width));
 		float bottom = (float) (getY(y) - getHeight(height));
 		float top = (float) (getY(y));
-		
-	    float r = (float) (0xff & (color >> 16) / 255);
-	    float g = (float) (0xff & (color >> 8) / 255);
-	    float b = (float) (0xff & (color) / 255);
-	    float a = (float) (0xff & (color >> 24) / 255);
-		
 		texture.bind();
 		
 		glBegin(GL_QUADS);
-		glColor4f(r, g, b, a);
+		glColor4f(1, 1, 1, 1);
 		
 		/* top-left */
 		glTexCoord2f(0, 0);
@@ -78,22 +72,48 @@ public class Gui
 		glEnd();
 	}
 
-	public void drawRect(double x, double y, double width, double height, int color)
+	public void displayImage(double x, double y, double width, double height, Texture texture, Color color)
 	{
 		float left = (float) (getX(x));
 		float right = (float) (getX(x) + getWidth(width));
 		float bottom = (float) (getY(y) - getHeight(height));
 		float top = (float) (getY(y));
+		texture.bind();
 		
-	    float r = (float) (0xff & (color >> 16) / 255);
-	    float g = (float) (0xff & (color >> 8) / 255);
-	    float b = (float) (0xff & (color) / 255);
-	    float a = (float) (0xff & (color >> 24) / 255);
+		glEnable(GL_BLEND);
+		glBegin(GL_QUADS);
+		glColor4f(color.redf(), color.greenf(), color.bluef(), color.alphaf());
+		
+		/* top-left */
+		glTexCoord2f(0, 0);
+		glVertex2f(left, top);
+
+		/* top-right */
+		glTexCoord2f(1, 0);
+		glVertex2f(right, top);
+
+		/* bottom-right */
+		glTexCoord2f(1, 1);
+		glVertex2f(right, bottom);
+
+		/* bottom-left */
+		glTexCoord2f(0, 1);
+		glVertex2f(left, bottom);
+		glEnd();
+		glDisable(GL_BLEND);
+	}
+
+	public void drawRect(double x, double y, double width, double height, Color color)
+	{
+		float left = (float) (getX(x));
+		float right = (float) (getX(x) + getWidth(width));
+		float bottom = (float) (getY(y) - getHeight(height));
+		float top = (float) (getY(y));
 
 	    glEnable(GL_BLEND);
 	    glDisable(GL_TEXTURE_2D);
 	    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-	    glColor4f(r, g, b, a);
+	    glColor4f(color.redf(), color.greenf(), color.bluef(), color.alphaf());
 		glBegin(GL_QUADS);
 
 		/* top-left */

@@ -17,6 +17,7 @@ import org.lwjgl.opengl.GLContext;
 
 import com.Akoot.foxgame.client.Gui;
 import com.Akoot.foxgame.client.Texture;
+import com.Akoot.foxgame.util.Color;
 
 public class Foxgame
 {
@@ -148,9 +149,11 @@ public class Foxgame
 			{
 				for(int j = 0; j < 8; j++)
 				{
-					gui.displayImage(i * size * 2, j * size * 2, size, size, texture, 0xffffffff);
+					gui.displayImage(i * size * 2, j * size * 2, size, size, texture, new Color(0x00ff00, 0.5));
 				}
 			}
+			
+			gui.drawRect(0, 0, 100, 100, new Color(0x0000ff, 0.1));
 
 			/* Swap color buffers */
 			glfwSwapBuffers(window);
