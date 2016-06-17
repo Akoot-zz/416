@@ -28,7 +28,7 @@ public class Texture
 		try
 		{
 			PNGDecoder decoder = new PNGDecoder(new FileInputStream(location));
-			
+
 			width = decoder.getWidth();
 			height = decoder.getHeight();
 
