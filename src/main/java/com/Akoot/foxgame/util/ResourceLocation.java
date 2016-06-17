@@ -1,4 +1,4 @@
-package com.Akoot.foxgame;
+package com.Akoot.foxgame.util;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.Validate;

@@ -1,4 +1,4 @@
-package com.Akoot.foxgame;
+package com.Akoot.foxgame.util;
 /*******************************************************************************
  * Copyright 2011 See AUTHORS file.
  * 

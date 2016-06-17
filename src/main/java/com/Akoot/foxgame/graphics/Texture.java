@@ -1,4 +1,4 @@
-package com.Akoot.foxgame.client;
+package com.Akoot.foxgame.graphics;
 
 import static org.lwjgl.opengl.GL11.GL_NEAREST;
 import static org.lwjgl.opengl.GL11.GL_RGBA;

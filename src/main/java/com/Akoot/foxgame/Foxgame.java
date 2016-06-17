@@ -14,9 +14,10 @@ import org.lwjgl.glfw.GLFWKeyCallback;
 import org.lwjgl.glfw.GLFWvidmode;
 import org.lwjgl.opengl.GLContext;
 
-import com.Akoot.foxgame.client.Gui;
-import com.Akoot.foxgame.client.Texture;
+import com.Akoot.foxgame.graphics.Gui;
+import com.Akoot.foxgame.graphics.Texture;
 import com.Akoot.foxgame.util.Color;
+import com.Akoot.foxgame.util.SharedLibraryLoader;
 
 public class Foxgame
 {
@@ -24,7 +25,7 @@ public class Foxgame
 	private GLFWErrorCallback errorCallback;
 	private GLFWKeyCallback   keyCallback;
 
-	/** The window */
+	/* The window */
 	private long window;
 
 	/* Basic information */
@@ -124,7 +125,7 @@ public class Foxgame
 		return h.getInt(0);
 	}
 
-	/* Main game loop */
+	/** Main game loop */
 	public void loop()
 	{
 		GLContext.createFromCurrent();		
@@ -230,7 +231,7 @@ public class Foxgame
 		}
 	}
 
-	/* Render all of the game */
+	/** Render all of the game */
 	public void render()
 	{	
 		int size = 100;
@@ -245,7 +246,7 @@ public class Foxgame
 		gui.drawRect(0, 0, 100, 100, new Color(0xff0000, 0.1));
 	}
 
-	/* Tick */
+	/** Tick */
 	public void tick()
 	{
 	}
