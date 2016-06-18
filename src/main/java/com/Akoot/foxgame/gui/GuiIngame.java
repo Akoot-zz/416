@@ -24,7 +24,7 @@ public class GuiIngame extends GuiScreen
 		
 		double width = 200.0;
 		
-		drawRect(5, 5, width, 25, Color.getColor(0x000000, 0.5));
-		drawRect(5, 5, (health / maxHealth) * width, 25, Color.getColor(0xff0000));
+//		drawRect(5, 5, width, 25, Color.getColor(0x000000, 0.5));
+//		drawRect(5, 5, (health / maxHealth) * width, 25, Color.getColor(0xff0000));
 	}
 }

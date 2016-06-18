@@ -49,4 +49,9 @@ public class EntityLiving extends Entity
 	{
 		System.out.println(displayName + ": " + msg);
 	}
+	
+	public double getSpeed()
+	{
+		return speed;
+	}
 }

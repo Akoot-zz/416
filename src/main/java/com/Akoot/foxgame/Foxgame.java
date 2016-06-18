@@ -216,8 +216,8 @@ public class Foxgame
 
 		events = new EventHandler();
 		gui = new Gui(this);
-		currentLevel = new TestLevel(this);
-		player = new EntityPlayer(this, "@Harold");	
+		currentLevel = new TestLevel(this);	
+		player = new EntityPlayer(this, "@Harold");
 		camera = new Camera(this);
 		currentScreen = new GuiIngame(this);
 		
@@ -324,7 +324,7 @@ public class Foxgame
 	/** Render all of the game */
 	public void render()
 	{
-		if(currentScreen instanceof GuiIngame) currentLevel.render();
+		if(currentLevel != null) currentLevel.render();
 		
 		/* Render everything else in the game */
 		events.dispatchEvent(new RenderEvent());
@@ -335,7 +335,7 @@ public class Foxgame
 	public void tick()
 	{
 		currentScreen.tick();
-		if(currentScreen instanceof GuiIngame) currentLevel.tick();
+		if(currentLevel != null) currentLevel.tick();
 		events.dispatchEvent(new TickEvent());
 	}
 
