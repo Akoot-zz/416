@@ -1,4 +1,4 @@
-package com.Akoot.foxgame.graphics;
+package com.Akoot.foxgame.util;
 
 import static org.lwjgl.opengl.GL11.GL_NEAREST;
 import static org.lwjgl.opengl.GL11.GL_RGBA;
@@ -23,11 +23,11 @@ public class Texture
 	private int id;
 	public int height, width;	
 
-	public Texture(String location)
+	public Texture(ResourceLocation location)
 	{
 		try
 		{
-			PNGDecoder decoder = new PNGDecoder(new FileInputStream(location));
+			PNGDecoder decoder = new PNGDecoder(new FileInputStream(location.resourcePath));
 
 			width = decoder.getWidth();
 			height = decoder.getHeight();

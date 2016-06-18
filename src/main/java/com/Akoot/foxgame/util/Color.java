@@ -34,6 +34,21 @@ public class Color
 	{
 		this(Integer.parseInt(hex, 16), alpha);
 	}
+	
+	public static Color getColor(int hex)
+	{
+		return new Color(hex);
+	}
+	
+	public static Color getColor(String hex)
+	{
+		return new Color(hex);
+	}
+	
+	public static Color getColor(int hex, double alpha)
+	{
+		return new Color(hex);
+	}
 
 	public float redf()
 	{

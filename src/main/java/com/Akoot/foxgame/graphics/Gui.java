@@ -3,7 +3,7 @@ package com.Akoot.foxgame.graphics;
 import static org.lwjgl.opengl.GL11.*;
 
 import com.Akoot.foxgame.util.Color;
-
+import com.Akoot.foxgame.util.Texture;
 import com.Akoot.foxgame.Foxgame;
 
 public class Gui

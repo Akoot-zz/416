@@ -9,11 +9,14 @@ public class EntityLiving extends Entity
 	protected double maxHealth;
 	protected double money;
 	protected Inventory inventory;
+	protected double speed;
 	
 	public EntityLiving(Foxgame game, String displayName)
 	{
 		super(game, displayName);
 		this.health = 100.0;
+		this.maxHealth = 100.0;
+		this.speed = 10.0;
 	}
 	
 	public double getHealth()

@@ -11,7 +11,7 @@ public class KeyboardHandler extends GLFWKeyCallback{
 	public void invoke(long window, int key, int scancode, int action, int mods)
 	{
 		keys[key] = action != GLFW_RELEASE;
-		if(action == GLFW_PRESS) System.out.println("Key Pressed: " + key);
+		//if(action == GLFW_PRESS) System.out.println("Key Pressed: " + key);
 	}
 	
 	public static boolean isKeyDown(int keycode)

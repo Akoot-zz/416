@@ -1,7 +1,6 @@
 package com.Akoot.foxgame.graphics;
 
 import com.Akoot.foxgame.Foxgame;
-import com.Akoot.foxgame.entity.Entity;
 import com.Akoot.foxgame.event.listeners.RenderListener;
 
 public class Camera implements RenderListener
@@ -11,7 +10,7 @@ public class Camera implements RenderListener
 	private double width;
 	private double height;
 	private Foxgame game;
-	private Entity target;
+	//private Entity target;
 	
 	public Camera(Foxgame game)
 	{

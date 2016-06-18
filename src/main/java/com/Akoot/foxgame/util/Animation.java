@@ -1,7 +1,5 @@
 package com.Akoot.foxgame.util;
 
-import com.Akoot.foxgame.graphics.Texture;
-
 public class Animation
 {
 	private int frames;

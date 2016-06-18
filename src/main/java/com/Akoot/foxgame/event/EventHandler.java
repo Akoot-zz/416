@@ -14,9 +14,10 @@ public final class EventHandler
 	 * @param eventClass The event
 	 * @param listener The class that listens for an event
 	 */
-	public <L> void addEventListener(Class<? extends GameEvent<L>> eventClass, L listener)
+	public <L> void addEventListener(Event event, L listener)
 	{
-		final ArrayList<L> listeners = listenersOf(eventClass);
+		@SuppressWarnings("unchecked")
+		final ArrayList<L> listeners = listenersOf(event.getEvent());
 		synchronized(listeners)
 		{
 			if (!listeners.contains(listener)) listeners.add(listener);

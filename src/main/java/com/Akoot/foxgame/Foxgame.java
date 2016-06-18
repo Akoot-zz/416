@@ -50,8 +50,11 @@ import com.Akoot.foxgame.event.events.RenderEvent;
 import com.Akoot.foxgame.event.events.TickEvent;
 import com.Akoot.foxgame.graphics.Camera;
 import com.Akoot.foxgame.graphics.Gui;
-import com.Akoot.foxgame.graphics.Texture;
+import com.Akoot.foxgame.gui.GuiIngame;
+import com.Akoot.foxgame.gui.GuiScreen;
 import com.Akoot.foxgame.input.KeyboardHandler;
+import com.Akoot.foxgame.level.Level;
+import com.Akoot.foxgame.level.TestLevel;
 import com.Akoot.foxgame.util.Color;
 import com.Akoot.foxgame.util.SharedLibraryLoader;
 
@@ -71,13 +74,17 @@ public class Foxgame
 	public final int initHeight = 700, initWidth = 1100;
 
 	private static Foxgame game;
+	
+	private EntityPlayer player;
 
 	public Gui gui;
-	private Texture texture;
+	private GuiScreen currentScreen;
 
 	private EventHandler events;
-	
+
 	private Camera camera;
+
+	private Level currentLevel;
 
 	/** Run */
 	public void run()
@@ -165,7 +172,7 @@ public class Foxgame
 	{
 		return game;
 	}
-	
+
 	public Camera getCamera()
 	{
 		return camera;
@@ -175,6 +182,31 @@ public class Foxgame
 	{
 		return events;
 	}
+	
+	public Level getCurrentLevel()
+	{
+		return currentLevel;
+	}
+	
+	public void setLevel(Level level)
+	{
+		this.currentLevel = level;
+	}
+	
+	public GuiScreen getCurrentScreen()
+	{
+		return currentScreen;
+	}
+	
+	public void setGuiScreen(GuiScreen screen)
+	{
+		this.currentScreen = screen;
+	}
+	
+	public EntityPlayer getPlayer()
+	{
+		return player;
+	}
 
 	/** Main game loop */
 	public void loop()
@@ -182,13 +214,15 @@ public class Foxgame
 		GLContext.createFromCurrent();		
 		/** Everything must be initiated AFTER this line */
 
-		gui = new Gui(this);
-		texture = new Texture("assets/textures/bricks.png");
 		events = new EventHandler();
+		gui = new Gui(this);
+		currentLevel = new TestLevel(this);
+		player = new EntityPlayer(this, "@Harold");	
 		camera = new Camera(this);
-
-		EntityPlayer harold = new EntityPlayer(this, "@Harold");
-		harold.chat("I am alive.");
+		currentScreen = new GuiIngame(this);
+		
+		player.setColor(Color.getColor(0x552200));
+		player.chat("I am alive.");
 
 		/** glState anything here */
 
@@ -289,21 +323,19 @@ public class Foxgame
 
 	/** Render all of the game */
 	public void render()
-	{	
-		int size = 100;
-		for(int i = 0; i < 15; i++)
-		{
-			for(int j = 0; j < 8; j++)
-			{
-				gui.drawTexture(i * size * 2, j * size * 2, size, size, texture, new Color(0xfe7777));
-			}
-		}
+	{
+		if(currentScreen instanceof GuiIngame) currentLevel.render();
+		
+		/* Render everything else in the game */
 		events.dispatchEvent(new RenderEvent());
+		currentScreen.render();
 	}
 
 	/** Tick */
 	public void tick()
 	{
+		currentScreen.tick();
+		if(currentScreen instanceof GuiIngame) currentLevel.tick();
 		events.dispatchEvent(new TickEvent());
 	}
 
