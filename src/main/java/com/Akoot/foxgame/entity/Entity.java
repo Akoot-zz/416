@@ -31,7 +31,6 @@ public class Entity implements TickListener, RenderListener
 		/* Setup defaults */
 		this.displayName = displayName;
 		this.game = game;
-		this.level = game.getCurrentLevel();
 		this.gui = game.gui;
 		this.textureLocation = new ResourceLocation("assets/textures/unknown.png");
 		this.texture = new Texture(textureLocation);
@@ -40,7 +39,6 @@ public class Entity implements TickListener, RenderListener
 		this.width = 50;
 		this.height = 50;
 		this.solid = true;
-		this.level.getEntities().add(this);
 
 		/* Add event listeners */
 		game.getEvents().addEventListener(Event.UPDATE, this);
