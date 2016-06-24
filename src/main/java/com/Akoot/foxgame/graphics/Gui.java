@@ -42,11 +42,6 @@ public class Gui
 	{
 		drawTexture(x, y, width, height, texture, new Color(0xffffff, alpha));
 	}
-	
-	public void move(double x, double y)
-	{
-		glTranslatef((float) x, (float) y,0);
-	}
 
 	public void drawTexture(double x, double y, double width, double height, Texture texture)
 	{

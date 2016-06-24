@@ -27,11 +27,7 @@ public class Level implements RenderListener, TickListener
 	public void tick() {}
 
 	@Override
-	public void render()
-	{
-		if(this.background != null) this.background.render();
-		this.world.render();
-	}
+	public void render() {}
 
 	public Foxgame getGame()
 	{
