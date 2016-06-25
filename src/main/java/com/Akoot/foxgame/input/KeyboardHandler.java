@@ -3,8 +3,8 @@ package com.Akoot.foxgame.input;
 import org.lwjgl.glfw.GLFWKeyCallback;
 import static org.lwjgl.glfw.GLFW.*;
 
-public class KeyboardHandler extends GLFWKeyCallback{
-
+public class KeyboardHandler extends GLFWKeyCallback
+{
 	public static boolean[] keys = new boolean[65536];
 	
 	@Override

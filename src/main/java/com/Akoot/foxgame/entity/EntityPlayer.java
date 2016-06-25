@@ -7,7 +7,7 @@ import com.Akoot.foxgame.util.Texture;
 
 public class EntityPlayer extends EntityLiving
 {
-	private double hunger;
+	protected double hunger;
 
 	public EntityPlayer(Foxgame game, String username)
 	{
@@ -15,6 +15,8 @@ public class EntityPlayer extends EntityLiving
 		this.textureLocation = new ResourceLocation("assets/textures/player.png");
 		this.texture = new Texture(textureLocation);
 		this.health = 200.0;
+		this.hunger = 200.0;
+		this.maxHealth = 200.0;
 		this.height = 50;
 		this.width = 50;
 	}

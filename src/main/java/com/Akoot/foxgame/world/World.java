@@ -1,51 +1,49 @@
 package com.Akoot.foxgame.world;
 
-import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.IOException;
-
-import javax.imageio.ImageIO;
-
 import com.Akoot.foxgame.entity.Entity;
-import com.Akoot.foxgame.util.Pixels;
 import com.Akoot.foxgame.util.ResourceLocation;
 
 public class World
 {
-	protected int width, height;
-	public Tile[][] tiles;
+	protected int size;
+	public Tile[] tiles;
 	public Entity[] entities;
 
 	/**
 	 * @param size The size of the map
 	 */
-	public World(int width, int height)
+	public World(int size)
 	{
-		this.width = width;
-		this.height = height;
-		this.tiles = new Tile[width][height];
+		this.size = size;
+		this.tiles = new Tile[size];
 	}
 
 	public void generate(ResourceLocation location)
 	{
-		try
+		for(int i = 0; i < size; i++)
 		{
-			BufferedImage image = ImageIO.read(new File(location.getResourcePath()));
-			this.width = image.getWidth();
-			this.height = image.getHeight();
-			int[][] pixels = Pixels.getPixels(image);
-			for(int row = 0; row < image.getWidth(); row++)
-			{
-				for(int col = 0; col < image.getHeight(); col++)
-				{
-					
-				}
-			}
+			tiles[i] = Tile.getTiles()[1];
+			tiles[i].x += tiles[i].size * 2 * i;
+			tiles[i].y += tiles[i].size * 2 * i;
 		}
-		catch (IOException e)
-		{
-			e.printStackTrace();
-		}
+//		try
+//		{
+//			BufferedImage image = ImageIO.read(location.getFile());
+//			this.size = (image.getHeight() + image.getWidth());
+//			int[] pixels = Pixels.getPixels(image);
+//			int i = 0;
+//			for(int pixel: pixels)
+//			{
+//				Tile tile = Tile.getTiles()[0];
+//				if(pixel == 0x000000) tile =  Tile.getTiles()[1];
+//				tiles[i] = tile;
+//				i++;
+//			}
+//		}
+//		catch (Exception e)
+//		{
+//			e.printStackTrace();
+//		}
 	}
 
 	public void generateRandom()
@@ -55,5 +53,9 @@ public class World
 
 	public void render()
 	{
+		for(Tile tile: tiles)
+		{
+			if(tile != null) tile.render();
+		}
 	}
 }
