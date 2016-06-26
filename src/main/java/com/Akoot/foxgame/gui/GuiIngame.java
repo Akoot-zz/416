@@ -19,15 +19,12 @@ public class GuiIngame extends GuiScreen
 	{
 		double health = player.getHealth();
 		double maxHealth = player.getMaxHealth();
-		double hunger = player.getHunger();
-		double maxHunger = 200.0;
+		double hunger = player.getHealth();
+		double maxHunger = 20.0;
 		
 		double width = 200.0;
 		
-		drawRect(5, 5, width, 25, Color.getColor(0x000000, 0.5));
-		drawRect(5, 5, (health / maxHealth) * width, 25, Color.getColor(0xff0000));
-		
-		drawRect(5, 60, width, 25, Color.getColor(0x000000, 0.5));
-		drawRect(5, 60, (hunger / maxHunger) * width, 25, Color.getColor(0xffaa00));
+//		drawRect(5, 5, width, 25, Color.getColor(0x000000, 0.5));
+//		drawRect(5, 5, (health / maxHealth) * width, 25, Color.getColor(0xff0000));
 	}
 }

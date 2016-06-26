@@ -48,7 +48,6 @@ import com.Akoot.foxgame.entity.EntityPlayer;
 import com.Akoot.foxgame.event.EventHandler;
 import com.Akoot.foxgame.event.events.RenderEvent;
 import com.Akoot.foxgame.event.events.TickEvent;
-import com.Akoot.foxgame.graphics.Camera;
 import com.Akoot.foxgame.graphics.Gui;
 import com.Akoot.foxgame.gui.GuiIngame;
 import com.Akoot.foxgame.gui.GuiScreen;
@@ -74,17 +73,11 @@ public class Foxgame
 	public final int initHeight = 700, initWidth = 1100;
 
 	private static Foxgame game;
-	
 	private EntityPlayer player;
-
 	public Gui gui;
 	private GuiScreen currentScreen;
-
 	private EventHandler events;
-
-	private Camera camera;
-
-	private Level currentLevel;
+	private Level level;
 
 	/** Run */
 	public void run()
@@ -173,36 +166,31 @@ public class Foxgame
 		return game;
 	}
 
-	public Camera getCamera()
-	{
-		return camera;
-	}
-
 	public EventHandler getEvents()
 	{
 		return events;
 	}
-	
+
 	public Level getCurrentLevel()
 	{
-		return currentLevel;
+		return level;
 	}
-	
+
 	public void setLevel(Level level)
 	{
-		this.currentLevel = level;
+		this.level = level;
 	}
-	
+
 	public GuiScreen getCurrentScreen()
 	{
 		return currentScreen;
 	}
-	
+
 	public void setGuiScreen(GuiScreen screen)
 	{
 		this.currentScreen = screen;
 	}
-	
+
 	public EntityPlayer getPlayer()
 	{
 		return player;
@@ -216,12 +204,11 @@ public class Foxgame
 
 		events = new EventHandler();
 		gui = new Gui(this);
-		currentLevel = new TestLevel(this);	
+		level = new TestLevel(this);	
 		player = new EntityPlayer(this, "@Harold");
-		camera = new Camera(this);
 		currentScreen = new GuiIngame(this);
-		
-		player.setColor(Color.getColor(0x552200));
+
+		player.setColor(Color.getColor(0xffba00));
 		player.chat("I am alive.");
 
 		/** glState anything here */
@@ -245,10 +232,6 @@ public class Foxgame
 		double nsPerTick = 1000000000D / 60D; //60 ticks per second
 		/* Nanoseconds per frame */
 		double nsPerFrame = 1000000000D / 60D; //60 frames per second
-
-		/* counters */
-		//		int ticks = 0;
-		//		int frames = 0;
 
 		/* Get milliseconds */
 		long lastTimer = System.currentTimeMillis();
@@ -274,7 +257,6 @@ public class Foxgame
 			/* Should the game tick */
 			while (deltaTicks >= 1)
 			{
-				//ticks++;
 				tick();
 				deltaTicks -= 1;
 			}
@@ -299,7 +281,6 @@ public class Foxgame
 			/* Render ONLY if it should */
 			if (shouldRender)
 			{
-				//frames++;
 				/* Clear frame buffer */
 				glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);	
 				render();
@@ -314,9 +295,6 @@ public class Foxgame
 			if (System.currentTimeMillis() - lastTimer >= 1000)
 			{
 				lastTimer += 1000;
-				//System.out.println(ticks + " ticks, " + frames + " frames");
-				//frames = 0;
-				//ticks = 0;
 			}
 		}
 	}
@@ -324,8 +302,9 @@ public class Foxgame
 	/** Render all of the game */
 	public void render()
 	{
-		if(currentLevel != null) currentLevel.render();
-		
+		/* Render the level */
+		if(level != null) level.render();
+
 		/* Render everything else in the game */
 		events.dispatchEvent(new RenderEvent());
 		currentScreen.render();
@@ -335,7 +314,7 @@ public class Foxgame
 	public void tick()
 	{
 		currentScreen.tick();
-		if(currentLevel != null) currentLevel.tick();
+		if(level != null) level.tick();
 		events.dispatchEvent(new TickEvent());
 	}
 

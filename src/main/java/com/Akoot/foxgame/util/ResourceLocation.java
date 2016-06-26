@@ -1,7 +1,5 @@
 package com.Akoot.foxgame.util;
 
-import java.io.File;
-
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.Validate;
 
@@ -39,7 +37,7 @@ public class ResourceLocation
      */
     protected static String[] splitObjectName(String toSplit)
     {
-        String[] astring = new String[] {"foxgame", toSplit};
+        String[] astring = new String[] {"minecraft", toSplit};
         int i = toSplit.indexOf(58);
 
         if (i >= 0)
@@ -85,11 +83,6 @@ public class ResourceLocation
             ResourceLocation resourcelocation = (ResourceLocation)p_equals_1_;
             return this.resourceDomain.equals(resourcelocation.resourceDomain) && this.resourcePath.equals(resourcelocation.resourcePath);
         }
-    }
-    
-    public File getFile()
-    {
-    	return new File(this.resourcePath);
     }
 
     public int hashCode()

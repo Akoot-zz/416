@@ -1,92 +1,59 @@
 package com.Akoot.foxgame.world;
 
-<<<<<<< HEAD
-=======
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
+
+import javax.imageio.ImageIO;
+
 import com.Akoot.foxgame.entity.Entity;
->>>>>>> origin/master
+import com.Akoot.foxgame.util.Pixels;
 import com.Akoot.foxgame.util.ResourceLocation;
 
 public class World
 {
-<<<<<<< HEAD
-	protected double width, height;
-	public Tile[] tiles;
-
-	public World(double width, double height)
-	{
-		this.width = width;
-		this.height = height;
-		tiles = new Tile[4];
-=======
-	protected int size;
-	public Tile[] tiles;
+	protected int width, height;
+	public Tile[][] tiles;
 	public Entity[] entities;
 
 	/**
 	 * @param size The size of the map
 	 */
-	public World(int size)
+	public World(int width, int height)
 	{
-		this.size = size;
-		this.tiles = new Tile[size];
->>>>>>> origin/master
+		this.width = width;
+		this.height = height;
+		this.tiles = new Tile[width][height];
 	}
 
 	public void generate(ResourceLocation location)
 	{
-<<<<<<< HEAD
-		tiles[0] = Tile.getTiles()[1];
-		tiles[1] = Tile.getTiles()[0];
-		tiles[2] = Tile.getTiles()[2];
-		tiles[3] = Tile.getTiles()[1];
-		for(int i = 0; i < tiles.length; i++) 
+		try
 		{
-			tiles[i].x += (i * tiles[i].size * 2);
+			BufferedImage image = ImageIO.read(new File(location.getResourcePath()));
+			this.width = image.getWidth();
+			this.height = image.getHeight();
+			int[][] pixels = Pixels.getPixels(image);
+			for(int row = 0; row < image.getWidth(); row++)
+			{
+				for(int col = 0; col < image.getHeight(); col++)
+				{
+					
+				}
+			}
 		}
-=======
-		for(int i = 0; i < size; i++)
+		catch (IOException e)
 		{
-			tiles[i] = Tile.getTiles()[1];
-			tiles[i].x += tiles[i].size * 2 * i;
-			tiles[i].y += tiles[i].size * 2 * i;
+			e.printStackTrace();
 		}
-//		try
-//		{
-//			BufferedImage image = ImageIO.read(location.getFile());
-//			this.size = (image.getHeight() + image.getWidth());
-//			int[] pixels = Pixels.getPixels(image);
-//			int i = 0;
-//			for(int pixel: pixels)
-//			{
-//				Tile tile = Tile.getTiles()[0];
-//				if(pixel == 0x000000) tile =  Tile.getTiles()[1];
-//				tiles[i] = tile;
-//				i++;
-//			}
-//		}
-//		catch (Exception e)
-//		{
-//			e.printStackTrace();
-//		}
 	}
 
 	public void generateRandom()
 	{
 
->>>>>>> origin/master
 	}
 
 	public void render()
 	{
-<<<<<<< HEAD
-		for(int i = 0; i < tiles.length; i++) 
-		{
-			tiles[i].render();
-=======
-		for(Tile tile: tiles)
-		{
-			if(tile != null) tile.render();
->>>>>>> origin/master
-		}
 	}
 }

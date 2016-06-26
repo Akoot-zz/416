@@ -2,15 +2,10 @@ package com.Akoot.foxgame.util;
 
 import java.awt.image.BufferedImage;
 import java.awt.image.DataBufferByte;
-import java.awt.image.DataBufferInt;
 
 public class Pixels
 {
-	public static int[] getPixels(BufferedImage image)
-	{
-		return ((DataBufferInt) image.getRaster().getDataBuffer()).getData();
-	}
-	public static int[][] getPixels2D(BufferedImage image)
+	public static int[][] getPixels(BufferedImage image)
 	{
 		final byte[] pixels = ((DataBufferByte) image.getRaster().getDataBuffer()).getData();
 		final int width = image.getWidth();
