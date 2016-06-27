@@ -8,6 +8,7 @@ import com.Akoot.foxgame.entity.Entity;
 import com.Akoot.foxgame.event.listeners.RenderListener;
 import com.Akoot.foxgame.event.listeners.TickListener;
 import com.Akoot.foxgame.graphics.elements.Background;
+import com.Akoot.foxgame.world.Tile;
 import com.Akoot.foxgame.world.World;
 
 public class Level implements RenderListener, TickListener
@@ -16,7 +17,7 @@ public class Level implements RenderListener, TickListener
 	protected World world;
 	protected Background background;
 	protected List<Entity> entities;
-	
+
 	public Level(Foxgame game)
 	{
 		this.game = game;
@@ -24,7 +25,23 @@ public class Level implements RenderListener, TickListener
 	}
 
 	@Override
-	public void tick() {}
+	public void tick()
+	{
+		for(Tile tile: world.tiles)
+		{
+			if(tile.isSolid())
+			{
+				for(Entity entity: this.entities)
+				{
+					if(entity.isSolid())
+					{
+						if(entity.hitTest(tile.x, tile.y, tile.size,tile.size)) System.out.println("hitting");
+					}
+				}
+			}
+		}
+
+	}
 
 	@Override
 	public void render()
@@ -37,12 +54,12 @@ public class Level implements RenderListener, TickListener
 	{
 		return game;
 	}
-	
+
 	public World getWorld()
 	{
 		return world;
 	}
-	
+
 	public List<Entity> getEntities()
 	{
 		return entities;

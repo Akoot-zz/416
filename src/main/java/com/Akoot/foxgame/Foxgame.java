@@ -210,6 +210,8 @@ public class Foxgame
 
 		player.setColor(Color.getColor(0xffba00));
 		player.chat("I am alive.");
+		
+		level.getEntities().add(player);
 
 		/** glState anything here */
 

@@ -17,6 +17,9 @@ public class EntityPlayer extends EntityLiving
 		this.health = 200.0;
 		this.height = 50;
 		this.width = 50;
+		this.x = 100;
+		this.y = 100;
+		this.speed = 5;
 	}
 
 	@Override

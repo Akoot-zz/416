@@ -12,18 +12,17 @@ import com.Akoot.foxgame.util.ResourceLocation;
 
 public class World
 {
-	protected int width, height;
-	public Tile[][] tiles;
+	protected int size;
+	public Tile[] tiles;
 	public Entity[] entities;
 
 	/**
 	 * @param size The size of the map
 	 */
-	public World(int width, int height)
+	public World(int size)
 	{
-		this.width = width;
-		this.height = height;
-		this.tiles = new Tile[width][height];
+		this.size = size;
+		this.tiles = new Tile[size];
 	}
 
 	public void generate(ResourceLocation location)
@@ -31,14 +30,23 @@ public class World
 		try
 		{
 			BufferedImage image = ImageIO.read(new File(location.getResourcePath()));
-			this.width = image.getWidth();
-			this.height = image.getHeight();
-			int[][] pixels = Pixels.getPixels(image);
-			for(int row = 0; row < image.getWidth(); row++)
+			int[] pixels = Pixels.getPixels(image);
+			this.size = pixels.length;
+			tiles = new Tile[size];
+			for(int i = 0; i < size; i++)
 			{
-				for(int col = 0; col < image.getHeight(); col++)
+				if(pixels[i] == 0xff000000) tiles[i] = Tile.getTiles()[1];
+				else if(pixels[i] == 0xff0000ff) tiles[i] = Tile.getTiles()[2];
+				else if(pixels[i] == 0xff00ff00) tiles[i] = Tile.getTiles()[3];
+				else if(pixels[i] == 0xffff0000) tiles[i] = Tile.getTiles()[4];
+				else tiles[i] = Tile.getTiles()[0];
+			}
+			for(int y = 0; y < image.getHeight(); y++)
+			{
+				for(int x = 0; x < image.getWidth(); x++)
 				{
-					
+					tiles[x + y * image.getWidth()].x += x * tiles[x].size * 2;
+					tiles[x + y * image.getHeight()].y += y * tiles[y].size * 2;
 				}
 			}
 		}
@@ -55,5 +63,9 @@ public class World
 
 	public void render()
 	{
+		for(int i = 0; i < size; i++)
+		{
+			tiles[i].render();
+		}
 	}
 }

@@ -19,12 +19,13 @@ public class Entity implements TickListener, RenderListener
 	protected ResourceLocation textureLocation;
 	protected Texture texture;
 	protected Color color;
-	protected double x;
-	protected double y;
-	protected double width;
-	protected double height;
+	public double x;
+	public double y;
+	public double width;
+	public double height;
 	protected boolean solid;
 	protected Level level;
+	public double speed;
 
 	public Entity(Foxgame game, String displayName)
 	{
@@ -72,35 +73,36 @@ public class Entity implements TickListener, RenderListener
 	{
 		return this.displayName;
 	}
-	
+
 	public Position getPosition()
 	{
 		return new Position(this.x, this.y);
 	}
-	
-	public double getX()
-	{
-		return x;
-	}
-	
-	public double getY()
-	{
-		return y;
-	}
-	
+
 	public void setPosition(double x, double y)
 	{
 		this.x = x;
 		this.y = y;
 	}
-	
+
 	public void setSolid(boolean b)
 	{
 		this.solid = b;
 	}
-	
+
 	public boolean isSolid()
 	{
 		return this.solid;
+	}
+
+	public boolean hitTestPoint(double x, double y)
+	{
+		if(this.x == x && this.y == y) return true;
+		return false;
+	}
+
+	public boolean hitTest(double x, double y, double width, double height)
+	{
+		return false;
 	}
 }
