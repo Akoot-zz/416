@@ -18,7 +18,7 @@ public class Tile
 
 	private Texture texture;
 	public Type type;
-	public int x, y, size;
+	public double x, y, size;
 	public Color color;
 	private boolean solid;
 

@@ -15,6 +15,8 @@ public class World
 	protected int size;
 	public Tile[] tiles;
 	public Entity[] entities;
+	public double gravity;
+	public double x, y;
 
 	/**
 	 * @param size The size of the map
@@ -59,6 +61,15 @@ public class World
 	public void generateRandom()
 	{
 
+	}
+	
+	public boolean hitTestPoint(double x, double y, boolean bool)
+	{
+		for(Tile tile: tiles)
+		{
+			if(tile.x == x && tile.y == y) return true;
+		}
+		return false;
 	}
 
 	public void render()

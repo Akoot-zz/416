@@ -206,6 +206,9 @@ public class Foxgame
 		gui = new Gui(this);
 		level = new TestLevel(this);	
 		player = new EntityPlayer(this, "@Harold");
+		player.startX = 100;
+		player.startY = 100;
+		player.init();
 		currentScreen = new GuiIngame(this);
 
 		player.setColor(Color.getColor(0xffba00));

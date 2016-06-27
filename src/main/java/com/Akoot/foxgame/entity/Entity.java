@@ -23,9 +23,21 @@ public class Entity implements TickListener, RenderListener
 	public double y;
 	public double width;
 	public double height;
-	protected boolean solid;
-	protected Level level;
+	public boolean onGround;
+	public boolean onCeiling;
+	public boolean onWallL;
+	public boolean onWallR;
+	protected double speedl;
+	protected double speedr;
 	public double speed;
+	protected double inertia;
+	protected double grav;
+	protected boolean solid;
+	protected double lastX;
+	protected double lastY;
+	public double startX;
+	public double startY;
+	protected Level level;
 
 	public Entity(Foxgame game, String displayName)
 	{
@@ -40,6 +52,7 @@ public class Entity implements TickListener, RenderListener
 		this.width = 50;
 		this.height = 50;
 		this.solid = true;
+		this.level = game.getCurrentLevel();
 
 		/* Add event listeners */
 		game.getEvents().addEventListener(Event.UPDATE, this);
@@ -93,16 +106,5 @@ public class Entity implements TickListener, RenderListener
 	public boolean isSolid()
 	{
 		return this.solid;
-	}
-
-	public boolean hitTestPoint(double x, double y)
-	{
-		if(this.x == x && this.y == y) return true;
-		return false;
-	}
-
-	public boolean hitTest(double x, double y, double width, double height)
-	{
-		return false;
 	}
 }
