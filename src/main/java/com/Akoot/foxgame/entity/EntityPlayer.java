@@ -23,8 +23,8 @@ public class EntityPlayer extends EntityLiving
 	@Override
 	public void init()
 	{
-		startX = 100;
-		startY = 100;
+		startX = 200;
+		startY = 200;
 		reset();
 	}
 

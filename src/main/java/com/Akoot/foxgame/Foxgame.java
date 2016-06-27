@@ -52,7 +52,7 @@ import com.Akoot.foxgame.graphics.Gui;
 import com.Akoot.foxgame.gui.GuiIngame;
 import com.Akoot.foxgame.gui.GuiScreen;
 import com.Akoot.foxgame.input.KeyboardHandler;
-import com.Akoot.foxgame.level.Level;
+import com.Akoot.foxgame.level.World;
 import com.Akoot.foxgame.level.TestLevel;
 import com.Akoot.foxgame.util.Color;
 import com.Akoot.foxgame.util.SharedLibraryLoader;
@@ -77,7 +77,7 @@ public class Foxgame
 	public Gui gui;
 	private GuiScreen currentScreen;
 	private EventHandler events;
-	private Level level;
+	private World level;
 
 	/** Run */
 	public void run()
@@ -171,12 +171,12 @@ public class Foxgame
 		return events;
 	}
 
-	public Level getCurrentLevel()
+	public World getCurrentLevel()
 	{
 		return level;
 	}
 
-	public void setLevel(Level level)
+	public void setLevel(World level)
 	{
 		this.level = level;
 	}

@@ -1,17 +1,17 @@
 package com.Akoot.foxgame.level;
 
 import com.Akoot.foxgame.Foxgame;
+import com.Akoot.foxgame.graphics.elements.Background;
 import com.Akoot.foxgame.util.ResourceLocation;
-import com.Akoot.foxgame.world.World;
+import com.Akoot.foxgame.util.Texture;
 
-public class TestLevel extends Level
+public class TestLevel extends World
 {
 	public TestLevel(Foxgame game)
 	{
 		super(game);
 		this.game = game;
-		this.world = new World(128);
-		//this.background = new Background(new Texture(new ResourceLocation("assets/textures/bg.png")));
-		this.world.generate(new ResourceLocation("assets/textures/testlevel.png"));
+		this.background = new Background(new Texture(new ResourceLocation("assets/textures/bg.png")));
+		this.generate(new ResourceLocation("assets/textures/testlevel.png"));
 	}
 }

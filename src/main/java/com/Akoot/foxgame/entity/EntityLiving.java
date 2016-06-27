@@ -90,41 +90,44 @@ public class EntityLiving extends Entity
 		onWallR = false;
 		canJump = true;
 
-		while (level.world.hitTestPoint(this.x, this.y + this.height - 1, true) || level.world.hitTestPoint(this.x - this.width / 2, this.y + this.height - 1, true) || level.world.hitTestPoint(this.x + this.width / 2, this.y + this.height - 1, true)) //bottom
-		{
-			jump = false;
-			this.y -= 0.5;
-			grav = 0;
-			onGround = true;
-		}
-		while (level.world.hitTestPoint(this.x, this.y - this.height - 0.5, true) || level.world.hitTestPoint(this.x - this.width / 2, this.y - this.height - 0.5, true) || level.world.hitTestPoint(this.x + this.width / 2, this.y - this.height - 0.5, true)) //top
-		{
-			onCeiling = true;
-			jump = false;
-			this.y += 0.5;
-			grav = 0;
-		}
-		while (level.world.hitTestPoint(this.x - this.width + 0.5, this.y - this.height / 2, true) || level.world.hitTestPoint(this.x - this.width + 0.5, this.y, true) || level.world.hitTestPoint(this.x - this.width + 0.5, this.y + this.height / 2, true)) //left
-		{
-			speedl = 0;
-			this.x += 0.1;
-			onWallL = true;
-		}
-		while (level.world.hitTestPoint(this.x + this.width - 0.5, this.y - this.height / 2, true) || level.world.hitTestPoint(this.x + this.width - 0.5, this.y, true) || level.world.hitTestPoint(this.x + this.width - 0.5, this.y + this.height / 2, true)) //right
-		{
-			speedr = 0;
-			this.x -= 0.1;
-			onWallR = true;
-		}
-		if ((onGround && onCeiling) || (onWallL && onWallR))
-		{
-			health = 0;
-		}
-		while (!crouching && onGround && ((level.world.hitTestPoint(this.x, this.y - this.height - 1, true) || level.world.hitTestPoint(this.x - this.width + 1, this.y - this.height - 1, true) || level.world.hitTestPoint(this.x + this.width - 1, this.y - this.height - 1, true))))
-		{
-			canJump = false;
-			this.y -= 8;
-			crouch(true);
-		}
+//		if (level.world.hitTestPoint(this.x, this.y + this.height * 2) || level.world.hitTestPoint(this.x + this.width, this.height * 2) || level.world.hitTestPoint(this.x + this.width * 2, this.height * 2)) //bottom
+//		{
+//			jump = false;
+//			this.y -= 0.5;
+//			grav = 0;
+//			onGround = true;
+//		}
+//		if (level.world.hitTestPoint(this.x, this.y - this.height - 0.5) || level.world.hitTestPoint(this.x - this.width / 2, this.y - this.height - 0.5) || level.world.hitTestPoint(this.x + this.width / 2, this.y - this.height - 0.5)) //top
+//		{
+//			onCeiling = true;
+//			jump = false;
+//			this.y += 0.5;
+//			grav = 0;
+//			System.out.println("c");
+//		}
+//		if (level.world.hitTestPoint(this.x - this.width + 0.5, this.y - this.height / 2) || level.world.hitTestPoint(this.x - this.width + 0.5, this.y) || level.world.hitTestPoint(this.x - this.width + 0.5, this.y + this.height / 2)) //left
+//		{
+//			speedl = 0;
+//			this.x += 0.1;
+//			onWallL = true;
+//			System.out.println("l");
+//		}
+//		if (level.world.hitTestPoint(this.x + this.width - 0.5, this.y - this.height / 2) || level.world.hitTestPoint(this.x + this.width - 0.5, this.y) || level.world.hitTestPoint(this.x + this.width - 0.5, this.y + this.height / 2)) //right
+//		{
+//			speedr = 0;
+//			this.x -= 0.1;
+//			onWallR = true;
+//			System.out.println("r");
+//		}
+//		if ((onGround && onCeiling) || (onWallL && onWallR))
+//		{
+//			health -= 10.0;
+//		}
+//		if (!crouching && onGround && ((level.world.hitTestPoint(this.x, this.y - this.height - 1) || level.world.hitTestPoint(this.x - this.width + 1, this.y - this.height - 1) || level.world.hitTestPoint(this.x + this.width - 1, this.y - this.height - 1))))
+//		{
+//			canJump = false;
+//			this.y -= 8;
+//			crouch(true);
+//		}
 	}
 }

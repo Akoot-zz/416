@@ -4,14 +4,14 @@ import com.Akoot.foxgame.Foxgame;
 import com.Akoot.foxgame.event.Event;
 import com.Akoot.foxgame.event.listeners.RenderListener;
 import com.Akoot.foxgame.event.listeners.TickListener;
+import com.Akoot.foxgame.graphics.DisplayObject;
 import com.Akoot.foxgame.graphics.Gui;
-import com.Akoot.foxgame.level.Level;
+import com.Akoot.foxgame.level.World;
 import com.Akoot.foxgame.util.Color;
-import com.Akoot.foxgame.util.Position;
 import com.Akoot.foxgame.util.ResourceLocation;
 import com.Akoot.foxgame.util.Texture;
 
-public class Entity implements TickListener, RenderListener
+public class Entity extends DisplayObject implements TickListener, RenderListener
 {
 	protected String displayName;
 	protected Foxgame game;
@@ -19,25 +19,15 @@ public class Entity implements TickListener, RenderListener
 	protected ResourceLocation textureLocation;
 	protected Texture texture;
 	protected Color color;
-	public double x;
-	public double y;
-	public double width;
-	public double height;
-	public boolean onGround;
-	public boolean onCeiling;
-	public boolean onWallL;
-	public boolean onWallR;
-	protected double speedl;
-	protected double speedr;
+	public boolean onGround, onCeiling, onWallL, onWallR;
+	protected double speedl, speedr;
 	public double speed;
 	protected double inertia;
 	protected double grav;
 	protected boolean solid;
-	protected double lastX;
-	protected double lastY;
-	public double startX;
-	public double startY;
-	protected Level level;
+	protected double lastX, lastY;
+	public double startX, startY;
+	protected World level;
 
 	public Entity(Foxgame game, String displayName)
 	{
@@ -85,22 +75,6 @@ public class Entity implements TickListener, RenderListener
 	public String getName()
 	{
 		return this.displayName;
-	}
-
-	public Position getPosition()
-	{
-		return new Position(this.x, this.y);
-	}
-
-	public void setPosition(double x, double y)
-	{
-		this.x = x;
-		this.y = y;
-	}
-
-	public void setSolid(boolean b)
-	{
-		this.solid = b;
 	}
 
 	public boolean isSolid()

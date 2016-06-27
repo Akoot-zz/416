@@ -1,30 +1,42 @@
-package com.Akoot.foxgame.world;
+package com.Akoot.foxgame.level;
 
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.imageio.ImageIO;
 
+import com.Akoot.foxgame.Foxgame;
 import com.Akoot.foxgame.entity.Entity;
+import com.Akoot.foxgame.event.listeners.RenderListener;
+import com.Akoot.foxgame.event.listeners.TickListener;
+import com.Akoot.foxgame.graphics.DisplayObject;
+import com.Akoot.foxgame.graphics.elements.Background;
 import com.Akoot.foxgame.util.Pixels;
 import com.Akoot.foxgame.util.ResourceLocation;
 
-public class World
+public class World extends DisplayObject implements RenderListener, TickListener
 {
+	protected Foxgame game;
 	protected int size;
+	protected Background background;
 	public Tile[] tiles;
-	public Entity[] entities;
+	public ArrayList<Entity> entities;
 	public double gravity;
-	public double x, y;
 
-	/**
-	 * @param size The size of the map
-	 */
-	public World(int size)
+	public World(Foxgame game)
 	{
-		this.size = size;
-		this.tiles = new Tile[size];
+		this.game = game;
+		this.entities = new ArrayList<Entity>();
+	}
+
+	@Override
+	public void tick()
+	{
+		//		world.tiles[0].x = game.getPlayer().x + world.tiles[0].size * 2;
+		//		world.tiles[0].y = game.getPlayer().y;
 	}
 
 	public void generate(ResourceLocation location)
@@ -58,25 +70,18 @@ public class World
 		}
 	}
 
-	public void generateRandom()
-	{
-
-	}
-	
-	public boolean hitTestPoint(double x, double y, boolean bool)
-	{
-		for(Tile tile: tiles)
-		{
-			if(tile.x == x && tile.y == y) return true;
-		}
-		return false;
-	}
-
+	@Override
 	public void render()
 	{
+		if(background != null) background.render();
 		for(int i = 0; i < size; i++)
 		{
 			tiles[i].render();
 		}
+	}
+
+	public List<Entity> getEntities()
+	{
+		return entities;
 	}
 }
