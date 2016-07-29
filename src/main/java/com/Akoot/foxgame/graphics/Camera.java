@@ -1,59 +1,26 @@
 package com.Akoot.foxgame.graphics;
 
-import com.Akoot.foxgame.Foxgame;
-import com.Akoot.foxgame.event.listeners.RenderListener;
+import static org.lwjgl.opengl.GL11.GL_MODELVIEW;
+import static org.lwjgl.opengl.GL11.GL_PROJECTION;
+import static org.lwjgl.opengl.GL11.glLoadIdentity;
+import static org.lwjgl.opengl.GL11.glMatrixMode;
+import static org.lwjgl.opengl.GL11.glOrtho;
 
-public class Camera implements RenderListener
+import com.Akoot.foxgame.Foxgame;
+
+public class Camera extends DisplayObject
 {
-	private double x;
-	private double y;
-	private double width;
-	private double height;
-	private Foxgame game;
-	//private Entity target;
-	
 	public Camera(Foxgame game)
 	{
-		this.x = 0;
-		this.y = 0;
+		setSize(game.initWidth, game.initHeight);
 	}
 	
 	@Override
-	public void render()
+	public void setSize(double width, double height)
 	{
-		this.width = game.getWidth();
-		this.height = game.getHeight();
-	}
-	
-	/** Get camera width
-	 * @return Width of the camera
-	 */
-	public double getWidth()
-	{
-		return width;
-	}
-	
-	/** Get camera height
-	 * @return Height of the camera
-	 */
-	public double getHeight()
-	{
-		return height;
-	}
-	
-	/** Get camera's X position
-	 * @return Y position of the camera
-	 */
-	public double getX()
-	{
-		return x;
-	}
-	
-	/** Get camera's Y position
-	 * @return Y position of the camera
-	 */
-	public double getY()
-	{
-		return y;
+		glMatrixMode(GL_PROJECTION);
+		glLoadIdentity();
+		glOrtho(0, width, height, 0, 1, -1);
+		glMatrixMode(GL_MODELVIEW);
 	}
 }

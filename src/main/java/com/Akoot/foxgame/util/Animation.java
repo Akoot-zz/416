@@ -1,18 +1,14 @@
 package com.Akoot.foxgame.util;
 
+import java.io.File;
+
 public class Animation
 {
-	private int frames;
-	private Texture texture;
-	private double[] positions;
+	private File animFile;
 	
-	public Animation(Texture texture)
+	public Animation(String location)
 	{
-		this.texture = texture;
-	}
-	
-	public void render()
-	{
-		
+		this.animFile = new File(new ResourceLocation("animations/" + location).getResourcePath());
+		//if(!this.animFile.exists()) System.out.println("Animation file " + this.animFile + " does not exist!");
 	}
 }

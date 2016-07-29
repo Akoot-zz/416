@@ -13,23 +13,22 @@ import com.Akoot.foxgame.entity.Entity;
 import com.Akoot.foxgame.event.listeners.RenderListener;
 import com.Akoot.foxgame.event.listeners.TickListener;
 import com.Akoot.foxgame.graphics.DisplayObject;
-import com.Akoot.foxgame.graphics.elements.Background;
 import com.Akoot.foxgame.util.Pixels;
 import com.Akoot.foxgame.util.ResourceLocation;
 
-public class World extends DisplayObject implements RenderListener, TickListener
+public class Level extends DisplayObject implements RenderListener, TickListener
 {
 	protected Foxgame game;
 	protected int size;
-	protected Background background;
-	public Tile[] tiles;
-	public ArrayList<Entity> entities;
+	protected Tile[] tiles;
+	protected ArrayList<Entity> entities;
 	public double gravity;
 
-	public World(Foxgame game)
+	public Level(Foxgame game)
 	{
 		this.game = game;
 		this.entities = new ArrayList<Entity>();
+		this.tiles = new Tile[0];
 	}
 
 	@Override
@@ -49,11 +48,11 @@ public class World extends DisplayObject implements RenderListener, TickListener
 			tiles = new Tile[size];
 			for(int i = 0; i < size; i++)
 			{
-				if(pixels[i] == 0xff000000) tiles[i] = Tile.getTiles()[1];
-				else if(pixels[i] == 0xff0000ff) tiles[i] = Tile.getTiles()[2];
-				else if(pixels[i] == 0xff00ff00) tiles[i] = Tile.getTiles()[3];
-				else if(pixels[i] == 0xffff0000) tiles[i] = Tile.getTiles()[4];
-				else tiles[i] = Tile.getTiles()[0];
+				if(pixels[i] == 0xff000000) tiles[i] = Tiles.BRICKS;
+				else if(pixels[i] == 0xff0000ff) tiles[i] = Tiles.WATER;
+				else if(pixels[i] == 0xff00ff00) tiles[i] = Tiles.GRASS;
+				else if(pixels[i] == 0xffff0000) tiles[i] = Tiles.LAVA;
+				else tiles[i] = Tiles.AIR;
 			}
 			for(int y = 0; y < image.getHeight(); y++)
 			{
@@ -62,6 +61,10 @@ public class World extends DisplayObject implements RenderListener, TickListener
 					tiles[x + y * image.getWidth()].x += x * tiles[x].size * 2;
 					tiles[x + y * image.getHeight()].y += y * tiles[y].size * 2;
 				}
+			}
+			for(int i = 0; i < 10; i++)
+			{
+				System.out.println("Tile " + i + ": " + tiles[i].type);
 			}
 		}
 		catch (IOException e)
@@ -73,7 +76,6 @@ public class World extends DisplayObject implements RenderListener, TickListener
 	@Override
 	public void render()
 	{
-		if(background != null) background.render();
 		for(int i = 0; i < size; i++)
 		{
 			tiles[i].render();

@@ -1,6 +1,5 @@
 package com.Akoot.foxgame.gui;
 
-import com.Akoot.foxgame.Foxgame;
 import com.Akoot.foxgame.entity.EntityPlayer;
 import com.Akoot.foxgame.util.Color;
 
@@ -8,23 +7,15 @@ public class GuiIngame extends GuiScreen
 {
 	private EntityPlayer player;
 	
-	public GuiIngame(Foxgame game)
+	public GuiIngame()
 	{
-		super(game);
-		this.player = game.getPlayer();
+		player = game.user.player;
 	}
 	
 	@Override
 	public void render()
 	{
-		double health = player.getHealth();
-		double maxHealth = player.getMaxHealth();
-		double hunger = player.getHealth();
-		double maxHunger = 20.0;
-		
-		double width = 200.0;
-		
-//		drawRect(5, 5, width, 25, Color.getColor(0x000000, 0.5));
-//		drawRect(5, 5, (health / maxHealth) * width, 25, Color.getColor(0xff0000));
+		System.out.println("Rendering");
+		stage.drawRect(0, 0, (player.getHealth() / player.getMaxHealth()) / 100.0, 25, Color.getColor(0xff0000));
 	}
 }

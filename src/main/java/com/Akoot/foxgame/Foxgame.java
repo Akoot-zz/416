@@ -8,7 +8,6 @@ import static org.lwjgl.glfw.GLFW.glfwDefaultWindowHints;
 import static org.lwjgl.glfw.GLFW.glfwDestroyWindow;
 import static org.lwjgl.glfw.GLFW.glfwGetPrimaryMonitor;
 import static org.lwjgl.glfw.GLFW.glfwGetVideoMode;
-import static org.lwjgl.glfw.GLFW.glfwGetWindowSize;
 import static org.lwjgl.glfw.GLFW.glfwInit;
 import static org.lwjgl.glfw.GLFW.glfwMakeContextCurrent;
 import static org.lwjgl.glfw.GLFW.glfwPollEvents;
@@ -37,53 +36,51 @@ import static org.lwjgl.system.MemoryUtil.NULL;
 
 import java.nio.ByteBuffer;
 
-import org.lwjgl.BufferUtils;
 import org.lwjgl.Sys;
 import org.lwjgl.glfw.GLFWErrorCallback;
 import org.lwjgl.glfw.GLFWKeyCallback;
 import org.lwjgl.glfw.GLFWvidmode;
 import org.lwjgl.opengl.GLContext;
 
-import com.Akoot.foxgame.entity.EntityPlayer;
 import com.Akoot.foxgame.event.EventHandler;
 import com.Akoot.foxgame.event.events.RenderEvent;
 import com.Akoot.foxgame.event.events.TickEvent;
-import com.Akoot.foxgame.graphics.Gui;
+import com.Akoot.foxgame.graphics.Camera;
 import com.Akoot.foxgame.gui.GuiIngame;
 import com.Akoot.foxgame.gui.GuiScreen;
+import com.Akoot.foxgame.gui.Stage;
 import com.Akoot.foxgame.input.KeyboardHandler;
-import com.Akoot.foxgame.level.World;
-import com.Akoot.foxgame.level.TestLevel;
-import com.Akoot.foxgame.util.Color;
+import com.Akoot.foxgame.level.Level;
 import com.Akoot.foxgame.util.SharedLibraryLoader;
 
 public class Foxgame
 {
 	/** Reference callback instances. */
 	private GLFWErrorCallback errorCallback;
-	private GLFWKeyCallback   keyCallback;
+	private GLFWKeyCallback keyCallback;
 
 	/* The window */
 	private long window;
 
 	/* Basic information */
-	public final String version = "0.0.1";
-	public final String name = "Foxgame", fullname = name + "-" + version;
+	public static final String version = "0.0.1";
+	public static final String name = "Foxgame", fullname = name + "-" + version;
 
 	public final int initHeight = 700, initWidth = 1100;
 
 	private static Foxgame game;
-	private EntityPlayer player;
-	public Gui gui;
-	private GuiScreen currentScreen;
-	private EventHandler events;
-	private World level;
+	public User user;
+	public GuiScreen currentScreen;
+	public EventHandler eventHandler;
+	public Level currentLevel;
+	public Camera camera;
+	public Stage theStage;
 
 	/** Run */
 	public void run()
 	{
 		/* Print message */
-		System.out.println("Hello LWJGL " + Sys.getVersion() + "!");
+		System.out.println("LWJGL " + Sys.getVersion() + " is working");
 		game = this;
 		try
 		{
@@ -141,49 +138,14 @@ public class Foxgame
 		glfwShowWindow(window);
 	}
 
-	/** Retrieves the display window's width.
-	 *  @return displayWidth */
-	public int getWidth()
-	{
-		ByteBuffer w = BufferUtils.createByteBuffer(4);
-		ByteBuffer h = BufferUtils.createByteBuffer(4);
-		glfwGetWindowSize(window, w, h);
-		return w.getInt(0);
-	}
-
-	/** Retrieves the display window's height.
-	 *  @return displayHeight */
-	public int getHeight()
-	{
-		ByteBuffer w = BufferUtils.createByteBuffer(4);
-		ByteBuffer h = BufferUtils.createByteBuffer(4);
-		glfwGetWindowSize(window, w, h);
-		return h.getInt(0);
-	}
-
 	public static Foxgame getFoxgame()
 	{
 		return game;
 	}
 
-	public EventHandler getEvents()
+	public void setLevel(Level level)
 	{
-		return events;
-	}
-
-	public World getCurrentLevel()
-	{
-		return level;
-	}
-
-	public void setLevel(World level)
-	{
-		this.level = level;
-	}
-
-	public GuiScreen getCurrentScreen()
-	{
-		return currentScreen;
+		this.currentLevel = level;
 	}
 
 	public void setGuiScreen(GuiScreen screen)
@@ -191,30 +153,17 @@ public class Foxgame
 		this.currentScreen = screen;
 	}
 
-	public EntityPlayer getPlayer()
-	{
-		return player;
-	}
-
 	/** Main game loop */
 	public void loop()
 	{
 		GLContext.createFromCurrent();		
 		/** Everything must be initiated AFTER this line */
-
-		events = new EventHandler();
-		gui = new Gui(this);
-		level = new TestLevel(this);	
-		player = new EntityPlayer(this, "@Harold");
-		player.startX = 100;
-		player.startY = 100;
-		player.init();
-		currentScreen = new GuiIngame(this);
-
-		player.setColor(Color.getColor(0xffba00));
-		player.chat("I am alive.");
 		
-		level.getEntities().add(player);
+		user = new User(this, "Jake111");
+		theStage = new Stage(this);
+		eventHandler = new EventHandler();
+		currentScreen = new GuiIngame();
+		camera = new Camera(this);
 
 		/** glState anything here */
 
@@ -307,11 +256,8 @@ public class Foxgame
 	/** Render all of the game */
 	public void render()
 	{
-		/* Render the level */
-		if(level != null) level.render();
-
 		/* Render everything else in the game */
-		events.dispatchEvent(new RenderEvent());
+		eventHandler.dispatchEvent(new RenderEvent());
 		currentScreen.render();
 	}
 
@@ -319,8 +265,7 @@ public class Foxgame
 	public void tick()
 	{
 		currentScreen.tick();
-		if(level != null) level.tick();
-		events.dispatchEvent(new TickEvent());
+		eventHandler.dispatchEvent(new TickEvent());
 	}
 
 	/** Main method of the entire program */

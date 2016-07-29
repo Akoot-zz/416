@@ -1,6 +1,5 @@
 package com.Akoot.foxgame.level;
 
-import com.Akoot.foxgame.Foxgame;
 import com.Akoot.foxgame.graphics.DisplayObject;
 import com.Akoot.foxgame.util.Color;
 import com.Akoot.foxgame.util.ResourceLocation;
@@ -10,55 +9,59 @@ public class Tile extends DisplayObject
 {
 	public enum Type
 	{
-		BRICKS,
-		GRASS,
-		WATER,
-		LAVA,
-		AIR
+		SOLID,
+		LIQUID,
+		GAS
 	}
 
 	private Texture texture;
+	private Color color;
 	public Type type;
 	public double size;
-	public Color color;
-	private boolean solid;
 
-	public Tile(ResourceLocation location, Type type, boolean solid, Color color)
+	public Tile(ResourceLocation location, Type type)
+	{
+		this(location, type, Color.getColor(0xffffff), 50);
+	}
+	public Tile(ResourceLocation location, Type type, double size)
+	{
+		this(location, type, Color.getColor(0xffffff), size);
+	}
+	
+	public Tile(ResourceLocation location, Type type, Color color)
+	{
+		this(location, type, color, 50);
+	}
+	
+	public Tile(ResourceLocation location, Type type, Color color, double size)
 	{
 		if(location != null) this.texture = new Texture(location);
 		this.color = color;
-		this.type = type;
-		this.size = 50;
+		this.size = size;
 		this.width = size;
 		this.height = size;
-		this.solid = solid;
+		this.type = type;
 	}
 	
+	@Override
 	public void render()
 	{
-		if(texture != null && type != Type.AIR) Foxgame.getFoxgame().gui.drawTexture(x, y, size, size, texture, (color != null ? color: Color.getColor(0xffffff)));
-	}
-
-	public static Tile[] getTiles()
-	{
-		return new Tile[]
-		{
-			new Tile(null, Type.AIR, false, null),
-			new Tile(new ResourceLocation("assets/textures/bricks.png"), Type.BRICKS, true, Color.getColor(0x555555)),
-			new Tile(new ResourceLocation("assets/textures/water.png"), Type.WATER, false, Color.getColor(0x53bde3)),
-			new Tile(new ResourceLocation("assets/textures/grass.png"), Type.GRASS, true, Color.getColor(0x5ec03c)),
-			new Tile(new ResourceLocation("assets/textures/water.png"), Type.LAVA, false, Color.getColor(0xff4200))
-		};
+		//if(texture != null) Foxgame.getFoxgame().gui.drawTexture(x, y, size, size, texture, (color != null ? color: Color.getColor(0xffffff)));
 	}
 	
 	public boolean isSolid()
 	{
-		return solid;
+		return type == Type.SOLID;
+	}
+	
+	public boolean isLiquid()
+	{
+		return type == Type.LIQUID;
 	}
 	
 	@Override
 	public String toString()
 	{
-		return String.format("(%s,%s) %s", x, y, type);
+		return String.format("(%s,%s) %s", x, y);
 	}
 }

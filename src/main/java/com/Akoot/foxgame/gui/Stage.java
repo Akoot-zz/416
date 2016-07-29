@@ -1,59 +1,26 @@
-package com.Akoot.foxgame.graphics;
+package com.Akoot.foxgame.gui;
+
+import com.Akoot.foxgame.Foxgame;
+import com.Akoot.foxgame.util.Color;
+import com.Akoot.foxgame.util.Texture;
 
 import static org.lwjgl.opengl.GL11.*;
 
-import com.Akoot.foxgame.util.Color;
-import com.Akoot.foxgame.util.Texture;
-import com.Akoot.foxgame.Foxgame;
-
-public class Gui
+public class Stage
 {
-	protected Foxgame game;
-
-	public Gui(Foxgame game)
+	public Foxgame game;
+	
+	public Stage(Foxgame game)
 	{
 		this.game = game;
 	}
-
-	private double getX(double x)
-	{
-		x -= game.getWidth();
-		return x /= game.getWidth();
-	}
-
-	private double getY(double y)
-	{
-		y -= game.getHeight();
-		y /= game.getHeight();
-		return -y;
-	}
-
-	private double getWidth(double width)
-	{
-		return width /= game.getWidth() / 2;
-	}
-
-	private double getHeight(double height)
-	{
-		return height /= game.getHeight() / 2;
-	}
-
-	public void drawTexture(double x, double y, double width, double height, Texture texture, double alpha)
-	{
-		drawTexture(x, y, width, height, texture, new Color(0xffffff, alpha));
-	}
 	
-	public void move(double x, double y)
-	{
-		glTranslatef((float) x, (float) y,0);
-	}
-
 	public void drawTexture(double x, double y, double width, double height, Texture texture)
 	{
-		float left = (float) (getX(x));
-		float right = (float) (getX(x) + getWidth(width));
-		float bottom = (float) (getY(y) - getHeight(height));
-		float top = (float) (getY(y));
+		float left = 0;
+		float right = 0;
+		float bottom = 0;
+		float top = 0;
 		texture.bind();
 
 		glEnable(GL_BLEND);
@@ -81,10 +48,10 @@ public class Gui
 
 	public void drawTexture(double x, double y, double width, double height, Texture texture, Color color)
 	{
-		float left = (float) (getX(x));
-		float right = (float) (getX(x) + getWidth(width));
-		float bottom = (float) (getY(y) - getHeight(height));
-		float top = (float) (getY(y));
+		float left = 0;
+		float right = 0;
+		float bottom = 0;
+		float top = 0;
 		texture.bind();
 
 		glEnable(GL_BLEND);
@@ -109,14 +76,14 @@ public class Gui
 		glEnd();
 		glDisable(GL_BLEND);
 	}
-
+	
 	public void drawRect(double x, double y, double width, double height, Color color)
 	{
-		float left = (float) (getX(x));
-		float right = (float) (getX(x) + getWidth(width));
-		float bottom = (float) (getY(y) - getHeight(height));
-		float top = (float) (getY(y));
-
+		float left = 0;
+		float right = 0;
+		float bottom = 0;
+		float top = 0;
+		
 		glEnable(GL_BLEND);
 		glDisable(GL_TEXTURE_2D);
 		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
