@@ -19,6 +19,11 @@ public class Color
 		this.rgb = (this.red << 16) | (this.green << 8) | this. blue;
 		this.argb = (this.alpha << 24) | (this.red << 16) | (this.green << 8) | this. blue;
 	}
+	
+	public static Color getRandomColor()
+	{
+		return new Color(((int) (Math.random() * 255) << 16) | ((int) (Math.random() * 255) << 8) | (int) (Math.random() * 255));
+	}
 
 	public Color(int hex)
 	{

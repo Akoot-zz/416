@@ -2,7 +2,6 @@ package com.Akoot.foxgame.items.guns;
 
 import com.Akoot.foxgame.item.AmmoType;
 import com.Akoot.foxgame.item.ItemGun;
-import com.Akoot.foxgame.util.Animation;
 
 public class Revolver extends ItemGun
 {
@@ -14,7 +13,6 @@ public class Revolver extends ItemGun
 		this.ammoPerClip = 6;
 		this.msPerShot = 550;
 		this.reloadTime = 4050;
-		this.reloadAnimation = new Animation("items/guns/revolver/reload.anim");
 	}
 	
 	public void onShoot()

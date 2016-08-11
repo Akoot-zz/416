@@ -4,7 +4,11 @@ import java.util.List;
 
 import com.Akoot.foxgame.User;
 import com.Akoot.foxgame.graphics.DisplayObject;
+import com.Akoot.foxgame.input.MouseHandler;
 import com.Akoot.foxgame.item.ItemRarity;
+import com.Akoot.foxgame.util.Color;
+import com.Akoot.foxgame.util.ResourceLocation;
+import com.Akoot.foxgame.util.Texture;
 
 public class Hat extends DisplayObject
 {
@@ -13,9 +17,41 @@ public class Hat extends DisplayObject
 	protected String description;
 	protected List<User> owners;
 	protected User owner;
+	protected Color color;
+	protected Texture texture_v;
+	protected Texture texture_c;
 	
 	public Hat()
 	{
-		this.description = "A " + this.displayname + ".";
+		this.width = 100;
+		this.height = 100;
+		this.color = Color.getColor(0xffffff);
+		this.texture_c = new Texture(new ResourceLocation("assets/textures/items/hats/%s/%s_c.png".replaceAll("%s", getClass().getSimpleName())));
+		this.texture_v = new Texture(new ResourceLocation("assets/textures/items/hats/%s/%s_v.png".replaceAll("%s", getClass().getSimpleName())));
+	}
+
+	public Color getColor()
+	{
+		return color;
+	}
+
+	public void setColor(Color color)
+	{
+		this.color = color;
+	}
+	
+	@Override
+	public void render()
+	{
+		stage.drawTexture(x - (width * scaleX / 4), y - height * scaleY / 2, width * scaleX, height * scaleY, texture_c, color);
+		stage.drawTexture(x - (width * scaleX / 4), y - height * scaleY / 2, width * scaleX, height * scaleY, texture_v);
+		
+		stage.drawRect(x, y, width, height, Color.getColor(0xff0000));
+		
+		if(this.hitTestPoint(MouseHandler.mouseX(this), MouseHandler.mouseY(this)))
+		{
+			//System.out.println("o");
+			stage.drawRect(MouseHandler.mouseX(this), MouseHandler.mouseY(this), 20, 20, color);
+		}
 	}
 }

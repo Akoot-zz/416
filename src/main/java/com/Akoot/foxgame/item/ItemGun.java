@@ -9,7 +9,7 @@ public class ItemGun extends Item
 	protected int ammo;
 	protected int ammoPerClip;
 	protected AmmoType ammoType;
-	protected Animation reloadAnimation;
+	protected Animation shootAnimation;
 	protected boolean automatic;
 	protected double bulletSpeed;
 
@@ -26,6 +26,7 @@ public class ItemGun extends Item
 		this.bulletSpeed = -1;
 		this.msPerShot = 500;
 		this.reloadTime = 1500;
+		this.shootAnimation = new Animation(2);
 	}
 
 	public ItemGun()

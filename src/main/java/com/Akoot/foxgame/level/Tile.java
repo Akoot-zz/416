@@ -46,7 +46,7 @@ public class Tile extends DisplayObject
 	@Override
 	public void render()
 	{
-		//if(texture != null) Foxgame.getFoxgame().gui.drawTexture(x, y, size, size, texture, (color != null ? color: Color.getColor(0xffffff)));
+		if(texture != null) stage.drawTexture(x, y, size, size, texture, (color != null ? color: Color.getColor(0xffffff)));
 	}
 	
 	public boolean isSolid()

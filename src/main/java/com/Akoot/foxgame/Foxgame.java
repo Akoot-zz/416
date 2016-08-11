@@ -11,6 +11,7 @@ import static org.lwjgl.glfw.GLFW.glfwGetVideoMode;
 import static org.lwjgl.glfw.GLFW.glfwInit;
 import static org.lwjgl.glfw.GLFW.glfwMakeContextCurrent;
 import static org.lwjgl.glfw.GLFW.glfwPollEvents;
+import static org.lwjgl.glfw.GLFW.glfwSetCursorPosCallback;
 import static org.lwjgl.glfw.GLFW.glfwSetErrorCallback;
 import static org.lwjgl.glfw.GLFW.glfwSetKeyCallback;
 import static org.lwjgl.glfw.GLFW.glfwSetWindowPos;
@@ -37,11 +38,13 @@ import static org.lwjgl.system.MemoryUtil.NULL;
 import java.nio.ByteBuffer;
 
 import org.lwjgl.Sys;
+import org.lwjgl.glfw.GLFWCursorPosCallback;
 import org.lwjgl.glfw.GLFWErrorCallback;
 import org.lwjgl.glfw.GLFWKeyCallback;
 import org.lwjgl.glfw.GLFWvidmode;
 import org.lwjgl.opengl.GLContext;
 
+import com.Akoot.foxgame.entity.EntityMob;
 import com.Akoot.foxgame.event.EventHandler;
 import com.Akoot.foxgame.event.events.RenderEvent;
 import com.Akoot.foxgame.event.events.TickEvent;
@@ -50,14 +53,18 @@ import com.Akoot.foxgame.gui.GuiIngame;
 import com.Akoot.foxgame.gui.GuiScreen;
 import com.Akoot.foxgame.gui.Stage;
 import com.Akoot.foxgame.input.KeyboardHandler;
+import com.Akoot.foxgame.input.MouseHandler;
 import com.Akoot.foxgame.level.Level;
+import com.Akoot.foxgame.util.ResourceLocation;
 import com.Akoot.foxgame.util.SharedLibraryLoader;
+import com.Akoot.foxgame.util.Texture;
 
 public class Foxgame
 {
 	/** Reference callback instances. */
 	private GLFWErrorCallback errorCallback;
 	private GLFWKeyCallback keyCallback;
+	private GLFWCursorPosCallback mouseCallback;
 
 	/* The window */
 	private long window;
@@ -71,10 +78,13 @@ public class Foxgame
 	private static Foxgame game;
 	public User user;
 	public GuiScreen currentScreen;
-	public EventHandler eventHandler;
+	public static EventHandler eventHandler = new EventHandler();
 	public Level currentLevel;
 	public Camera camera;
-	public Stage theStage;
+	public static Stage stage;
+
+	private RenderEvent renderEvent;
+	private TickEvent tickEvent;
 
 	/** Run */
 	public void run()
@@ -82,6 +92,8 @@ public class Foxgame
 		/* Print message */
 		System.out.println("LWJGL " + Sys.getVersion() + " is working");
 		game = this;
+		renderEvent = new RenderEvent();
+		tickEvent = new TickEvent();
 		try
 		{
 			init();
@@ -120,7 +132,8 @@ public class Foxgame
 		if (window == NULL) throw new RuntimeException("Failed to create the GLFW window.");
 
 		/* Setup a key callback. It will be called every time a key is pressed, repeated or released. */
-		glfwSetKeyCallback(window, keyCallback = new KeyboardHandler()); 
+		glfwSetKeyCallback(window, keyCallback = new KeyboardHandler());
+		glfwSetCursorPosCallback(window, mouseCallback = new MouseHandler());
 
 		/* Get primary monitor resolution */
 		ByteBuffer vidmode = glfwGetVideoMode(glfwGetPrimaryMonitor());
@@ -158,12 +171,30 @@ public class Foxgame
 	{
 		GLContext.createFromCurrent();		
 		/** Everything must be initiated AFTER this line */
-		
+
+		stage = new Stage(this);
+		//currentLevel = new Level(this);
+		//currentLevel.generate(new ResourceLocation("assets/textures/testlevel.png"));
+		EntityMob ghost = new EntityMob(this, "Ghost")
+		{
+			@Override
+			public void render()
+			{
+				stage.drawTexture(x, y, 100, 100, texture);
+			}
+		};
+		ghost.texture = new Texture(new ResourceLocation("assets/textures/player.png"));
+		ghost.x = 100;
+		ghost.y = 100;
 		user = new User(this, "Jake111");
-		theStage = new Stage(this);
-		eventHandler = new EventHandler();
+		//user.player.setScale(3);
+
+		//currentLevel.spawn(user.player);
+		//currentLevel.spawn(ghost);
+
 		currentScreen = new GuiIngame();
 		camera = new Camera(this);
+		//camera.setSize(1920, 1080);
 
 		/** glState anything here */
 
@@ -257,15 +288,20 @@ public class Foxgame
 	public void render()
 	{
 		/* Render everything else in the game */
-		eventHandler.dispatchEvent(new RenderEvent());
+		eventHandler.dispatchEvent(renderEvent);
 		currentScreen.render();
+		if(1 < 2)
+		{
+			camera.x = user.player.x - (camera.width / 2.0) + (user.player.width / 2.0);
+			camera.y = user.player.y - (camera.height / 2.0) + (user.player.height / 2.0);
+		}
 	}
 
 	/** Tick */
 	public void tick()
 	{
 		currentScreen.tick();
-		eventHandler.dispatchEvent(new TickEvent());
+		eventHandler.dispatchEvent(tickEvent);
 	}
 
 	/** Main method of the entire program */

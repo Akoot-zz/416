@@ -27,7 +27,7 @@ public class Entity extends DisplayObject implements TickListener
 	public Entity(Foxgame game, String displayName)
 	{
 		/* Setup defaults */
-		this.stage = game.theStage;
+		this.stage = Foxgame.stage;
 		this.displayName = displayName;
 		this.game = game;
 		this.texture = new Texture(new ResourceLocation("assets/textures/unknown.png"));
@@ -35,11 +35,13 @@ public class Entity extends DisplayObject implements TickListener
 		this.y = 0;
 		this.width = 50;
 		this.height = 50;
+		this.scaleX = 1;
+		this.scaleY = 1;
 		this.solid = true;
 		this.level = game.currentLevel;
 
 		/* Add event listeners */
-		game.eventHandler.addEventListener(Event.UPDATE, this);
+		Foxgame.eventHandler.addEventListener(Event.UPDATE, this);
 	}
 
 	public void init() {}

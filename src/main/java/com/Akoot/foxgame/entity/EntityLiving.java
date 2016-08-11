@@ -1,8 +1,14 @@
 package com.Akoot.foxgame.entity;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import com.Akoot.foxgame.Foxgame;
 import com.Akoot.foxgame.container.Inventory;
 import com.Akoot.foxgame.item.Item;
+import com.Akoot.foxgame.item.clothes.Clothes;
+import com.Akoot.foxgame.item.hat.Hat;
+import com.Akoot.foxgame.util.Animation;
 
 public class EntityLiving extends Entity
 {
@@ -16,6 +22,12 @@ public class EntityLiving extends Entity
 	protected boolean crouching;
 	protected double jumpHeight;
 	protected Item mainItem;
+	protected Hat hat;
+	protected List<Clothes> clothing;
+	protected Animation walkAnimation;
+	protected Animation runAnimation;
+	protected Animation jumpAnimation;
+	protected Animation idleAnimation;
 
 	public EntityLiving(Foxgame game, String displayName)
 	{
@@ -23,6 +35,12 @@ public class EntityLiving extends Entity
 		this.health = 100.0;
 		this.maxHealth = 100.0;
 		this.solid = true;
+		this.inventory = new Inventory();
+		this.clothing = new ArrayList<Clothes>();
+		this.walkAnimation = new Animation(2);
+		this.runAnimation = new Animation(2);
+		this.jumpAnimation = new Animation(2);
+		this.idleAnimation = new Animation(1);
 	}
 
 	protected void crouch(boolean crouch)
@@ -33,10 +51,6 @@ public class EntityLiving extends Entity
 			if (onGround)
 			{
 				this.y += 8;
-			}
-			else
-			{
-				//this.y -= 4;
 			}
 		}
 		else
@@ -70,6 +84,21 @@ public class EntityLiving extends Entity
 	{
 		this.maxHealth = health;
 	}
+	
+	public void addItem(Item item)
+	{
+		inventory.addItem(item);
+	}
+	
+	public void removeItem(Item item)
+	{
+		inventory.removeItem(item);
+	}
+	
+	public void setInventory(Inventory inv)
+	{
+		this.inventory = inv;
+	}
 
 	public void chat(String msg)
 	{
@@ -89,15 +118,34 @@ public class EntityLiving extends Entity
 		renderItem();
 	}
 	
+	public void setHat(Hat hat)
+	{
+		this.hat = hat;
+	}
+	
+	public Hat getHat()
+	{
+		return this.hat;
+	}
+	
 	public void renderHat()
 	{
+		if(hat != null)
+		{
+			hat.x = x;
+			hat.y = y;
+			hat.scaleX = scaleX;
+			hat.scaleY = scaleY;
+		}
 	}
 	
 	public void renderBody()
 	{
+		if(texture != null) stage.drawTexture(x, y, width * scaleX, height * scaleY, texture, color);
 	}
 	
 	public void renderItem()
 	{
+		//if(mainItem != null) stage.drawTexture(x, y, 50 * scale, 50 * scale, mainItem.texture);
 	}
 }

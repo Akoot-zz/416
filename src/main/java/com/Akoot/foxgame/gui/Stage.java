@@ -17,10 +17,10 @@ public class Stage
 	
 	public void drawTexture(double x, double y, double width, double height, Texture texture)
 	{
-		float left = 0;
-		float right = 0;
-		float bottom = 0;
-		float top = 0;
+		float left = (float) (x);
+		float right = (float) (x + width);
+		float bottom = (float) (y + height);
+		float top = (float) y;
 		texture.bind();
 
 		glEnable(GL_BLEND);
@@ -48,10 +48,10 @@ public class Stage
 
 	public void drawTexture(double x, double y, double width, double height, Texture texture, Color color)
 	{
-		float left = 0;
-		float right = 0;
-		float bottom = 0;
-		float top = 0;
+		float left = (float) (x);
+		float right = (float) (x + width);
+		float bottom = (float) (y + height);
+		float top = (float) y;
 		texture.bind();
 
 		glEnable(GL_BLEND);
@@ -79,10 +79,10 @@ public class Stage
 	
 	public void drawRect(double x, double y, double width, double height, Color color)
 	{
-		float left = 0;
-		float right = 0;
-		float bottom = 0;
-		float top = 0;
+		float left = (float) (x);
+		float right = (float) (x + width);
+		float bottom = (float) (y + height);
+		float top = (float) y;
 		
 		glEnable(GL_BLEND);
 		glDisable(GL_TEXTURE_2D);

@@ -10,7 +10,7 @@ public class Gui
 	public Gui(Foxgame game)
 	{
 		this.game = game;
-		this.stage = game.theStage;
+		this.stage = game.stage;
 	}
 //
 //	private double getX(double x)

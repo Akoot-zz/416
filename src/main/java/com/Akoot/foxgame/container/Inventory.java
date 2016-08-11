@@ -36,14 +36,6 @@ public class Inventory
 	{
 		if(this.contents.contains(item))
 		{
-			for(Item i: contents)
-			{
-				if(i.equals(item))
-				{
-					i.amount -= 1;
-					return;
-				}
-			}
 			this.contents.remove(item);
 		}
 	}

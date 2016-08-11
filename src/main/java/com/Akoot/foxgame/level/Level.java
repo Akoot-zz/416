@@ -10,6 +10,7 @@ import javax.imageio.ImageIO;
 
 import com.Akoot.foxgame.Foxgame;
 import com.Akoot.foxgame.entity.Entity;
+import com.Akoot.foxgame.entity.EntityLiving;
 import com.Akoot.foxgame.event.listeners.RenderListener;
 import com.Akoot.foxgame.event.listeners.TickListener;
 import com.Akoot.foxgame.graphics.DisplayObject;
@@ -34,8 +35,11 @@ public class Level extends DisplayObject implements RenderListener, TickListener
 	@Override
 	public void tick()
 	{
-		//		world.tiles[0].x = game.getPlayer().x + world.tiles[0].size * 2;
-		//		world.tiles[0].y = game.getPlayer().y;
+	}
+	
+	public void spawn(Entity entity)
+	{
+		this.entities.add(entity);
 	}
 
 	public void generate(ResourceLocation location)
@@ -58,13 +62,14 @@ public class Level extends DisplayObject implements RenderListener, TickListener
 			{
 				for(int x = 0; x < image.getWidth(); x++)
 				{
-					tiles[x + y * image.getWidth()].x += x * tiles[x].size * 2;
-					tiles[x + y * image.getHeight()].y += y * tiles[y].size * 2;
+					int i = x + y * image.getHeight();
+					tiles[i].x = (image.getWidth() * tiles[i].size / 2.0) + (x * tiles[i].size);
+					tiles[i].y = (image.getHeight() * tiles[i].size / 2.0) + (y * tiles[i].size);
 				}
 			}
 			for(int i = 0; i < 10; i++)
 			{
-				System.out.println("Tile " + i + ": " + tiles[i].type);
+				System.out.println("Tile " + i + ": " + tiles[i].type + " (" + tiles[i].x + "," + tiles[i].y + ")");
 			}
 		}
 		catch (IOException e)
@@ -85,5 +90,13 @@ public class Level extends DisplayObject implements RenderListener, TickListener
 	public List<Entity> getEntities()
 	{
 		return entities;
+	}
+	
+	public List<EntityLiving> getLivingEntities()
+	{
+		//CHEAP METHOD ONLY $1
+		List<EntityLiving> living = new ArrayList<EntityLiving>();
+		for(Entity e: entities) if(e instanceof EntityLiving) living.add((EntityLiving) e);
+		return living;
 	}
 }

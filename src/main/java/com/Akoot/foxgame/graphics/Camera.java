@@ -10,17 +10,20 @@ import com.Akoot.foxgame.Foxgame;
 
 public class Camera extends DisplayObject
 {
+	//private Foxgame game;
+	
 	public Camera(Foxgame game)
 	{
+		//this.game = game;
 		setSize(game.initWidth, game.initHeight);
 	}
 	
 	@Override
-	public void setSize(double width, double height)
+	public void render()
 	{
 		glMatrixMode(GL_PROJECTION);
 		glLoadIdentity();
-		glOrtho(0, width, height, 0, 1, -1);
+		glOrtho(x, x + width, y + height, y, 1, -1);
 		glMatrixMode(GL_MODELVIEW);
 	}
 }
