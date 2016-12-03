@@ -38,6 +38,7 @@ import static org.lwjgl.system.MemoryUtil.NULL;
 import java.nio.ByteBuffer;
 
 import org.lwjgl.Sys;
+import org.lwjgl.glfw.GLFW;
 import org.lwjgl.glfw.GLFWCursorPosCallback;
 import org.lwjgl.glfw.GLFWErrorCallback;
 import org.lwjgl.glfw.GLFWKeyCallback;
@@ -49,8 +50,8 @@ import com.Akoot.foxgame.event.EventHandler;
 import com.Akoot.foxgame.event.events.RenderEvent;
 import com.Akoot.foxgame.event.events.TickEvent;
 import com.Akoot.foxgame.graphics.Camera;
+import com.Akoot.foxgame.gui.Gui;
 import com.Akoot.foxgame.gui.GuiIngame;
-import com.Akoot.foxgame.gui.GuiScreen;
 import com.Akoot.foxgame.gui.Stage;
 import com.Akoot.foxgame.input.KeyboardHandler;
 import com.Akoot.foxgame.input.MouseHandler;
@@ -67,7 +68,7 @@ public class Foxgame
 	private GLFWCursorPosCallback mouseCallback;
 
 	/* The window */
-	private long window;
+	public long window;
 
 	/* Basic information */
 	public static final String version = "0.0.1";
@@ -77,7 +78,7 @@ public class Foxgame
 
 	private static Foxgame game;
 	public User user;
-	public GuiScreen currentScreen;
+	public Gui currentScreen;
 	public static EventHandler eventHandler = new EventHandler();
 	public Level currentLevel;
 	public Camera camera;
@@ -161,7 +162,7 @@ public class Foxgame
 		this.currentLevel = level;
 	}
 
-	public void setGuiScreen(GuiScreen screen)
+	public void setGuiScreen(Gui screen)
 	{
 		this.currentScreen = screen;
 	}
@@ -192,18 +193,12 @@ public class Foxgame
 		//currentLevel.spawn(user.player);
 		//currentLevel.spawn(ghost);
 
-		currentScreen = new GuiIngame();
+		currentScreen = new GuiIngame(this);
 		camera = new Camera(this);
 		//camera.setSize(1920, 1080);
 
 		/** glState anything here */
-
-		/* Enable alpha channels */
-		glEnable(GL_BLEND);
-		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-
-		/* Enable textures */
-		glEnable(GL_TEXTURE_2D);
+		MouseHandler.showCursor(false);
 
 		/* Set the background color*/
 		glClearColor(1,1,1,1);
@@ -289,7 +284,6 @@ public class Foxgame
 	{
 		/* Render everything else in the game */
 		eventHandler.dispatchEvent(renderEvent);
-		currentScreen.render();
 		if(1 < 2)
 		{
 			camera.x = user.player.x - (camera.width / 2.0) + (user.player.width / 2.0);
@@ -300,7 +294,6 @@ public class Foxgame
 	/** Tick */
 	public void tick()
 	{
-		currentScreen.tick();
 		eventHandler.dispatchEvent(tickEvent);
 	}
 

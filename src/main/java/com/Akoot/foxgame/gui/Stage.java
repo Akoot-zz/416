@@ -17,33 +17,12 @@ public class Stage
 	
 	public void drawTexture(double x, double y, double width, double height, Texture texture)
 	{
-		float left = (float) (x);
-		float right = (float) (x + width);
-		float bottom = (float) (y + height);
-		float top = (float) y;
-		texture.bind();
-
-		glEnable(GL_BLEND);
-		glBegin(GL_QUADS);
-		glColor4f(1, 1, 1, 1);
-
-		/* top-left */
-		glTexCoord2f(0, 0);
-		glVertex2f(left, top);
-
-		/* top-right */
-		glTexCoord2f(1, 0);
-		glVertex2f(right, top);
-
-		/* bottom-right */
-		glTexCoord2f(1, 1);
-		glVertex2f(right, bottom);
-
-		/* bottom-left */
-		glTexCoord2f(0, 1);
-		glVertex2f(left, bottom);
-		glEnd();
-		glDisable(GL_BLEND);
+		drawTexture(x, y, width, height, texture, Color.getColor(0xffffff));
+	}
+	
+	public void drawTexture(double x, double y, double width, double height, Texture texture, double alpha)
+	{
+		drawTexture(x, y, width, height, texture, Color.getColor(0xffffff, alpha));
 	}
 
 	public void drawTexture(double x, double y, double width, double height, Texture texture, Color color)
@@ -54,7 +33,10 @@ public class Stage
 		float top = (float) y;
 		texture.bind();
 
+		glMatrixMode(GL_TEXTURE);
+		glEnable(GL_TEXTURE_2D);
 		glEnable(GL_BLEND);
+		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 		glBegin(GL_QUADS);
 		glColor4f(color.redf(), color.greenf(), color.bluef(), color.alphaf());
 
@@ -74,7 +56,9 @@ public class Stage
 		glTexCoord2f(0, 1);
 		glVertex2f(left, bottom);
 		glEnd();
+		glDisable(GL_TEXTURE_2D);
 		glDisable(GL_BLEND);
+		glMatrixMode(GL_MODELVIEW);
 	}
 	
 	public void drawRect(double x, double y, double width, double height, Color color)
@@ -85,8 +69,7 @@ public class Stage
 		float top = (float) y;
 		
 		glEnable(GL_BLEND);
-		glDisable(GL_TEXTURE_2D);
-		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+	    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 		glColor4f(color.redf(), color.greenf(), color.bluef(), color.alphaf());
 		glBegin(GL_QUADS);
 
@@ -103,7 +86,6 @@ public class Stage
 		glVertex2f(left, bottom);
 
 		glEnd();
-		glEnable(GL_TEXTURE_2D);
 		glDisable(GL_BLEND);
 	}
 }

@@ -52,7 +52,7 @@ public class Color
 	
 	public static Color getColor(int hex, double alpha)
 	{
-		return new Color(hex);
+		return new Color(hex, alpha);
 	}
 
 	public float redf()

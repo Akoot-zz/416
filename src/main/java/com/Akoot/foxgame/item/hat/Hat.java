@@ -47,10 +47,9 @@ public class Hat extends DisplayObject
 		stage.drawTexture(x - (width * scaleX / 4), y - height * scaleY / 2, width * scaleX, height * scaleY, texture_v);
 		
 		stage.drawRect(x, y, width, height, Color.getColor(0xff0000));
-		
+
 		if(this.hitTestPoint(MouseHandler.mouseX(this), MouseHandler.mouseY(this)))
 		{
-			//System.out.println("o");
 			stage.drawRect(MouseHandler.mouseX(this), MouseHandler.mouseY(this), 20, 20, color);
 		}
 	}

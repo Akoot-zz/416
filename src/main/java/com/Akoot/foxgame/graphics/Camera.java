@@ -10,11 +10,8 @@ import com.Akoot.foxgame.Foxgame;
 
 public class Camera extends DisplayObject
 {
-	//private Foxgame game;
-	
 	public Camera(Foxgame game)
 	{
-		//this.game = game;
 		setSize(game.initWidth, game.initHeight);
 	}
 	
