@@ -9,7 +9,7 @@ import com.Akoot.foxgame.util.Texture;
 
 public class DisplayObject implements RenderListener
 {
-	public double x, y, width, height, scaleX, scaleY, defScale;
+	public float x, y, width, height, scaleX, scaleY, defScale;
 	public Texture texture;
 	public Color color;
 	protected Stage stage;
@@ -24,13 +24,13 @@ public class DisplayObject implements RenderListener
 	@Override
 	public void render() {}
 
-	public void setSize(double width, double height)
+	public void setSize(float width, float height)
 	{
 		this.width = width;
 		this.height = height;
 	}
 	
-	public void setScale(double scale)
+	public void setScale(float scale)
 	{
 		this.defScale = scale;
 		this.scaleX = scale;

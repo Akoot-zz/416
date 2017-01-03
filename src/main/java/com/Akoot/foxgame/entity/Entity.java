@@ -21,7 +21,7 @@ public class Entity extends DisplayObject implements TickListener
 	protected double grav;
 	protected boolean solid;
 	protected double lastX, lastY;
-	public double startX, startY;
+	public float startX, startY;
 	protected Level level;
 
 	public Entity(Foxgame game, String displayName)

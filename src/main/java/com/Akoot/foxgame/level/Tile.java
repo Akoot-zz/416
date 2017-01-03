@@ -17,13 +17,13 @@ public class Tile extends DisplayObject
 	private Texture texture;
 	private Color color;
 	public Type type;
-	public double size;
+	public float size;
 
 	public Tile(ResourceLocation location, Type type)
 	{
 		this(location, type, Color.getColor(0xffffff), 50);
 	}
-	public Tile(ResourceLocation location, Type type, double size)
+	public Tile(ResourceLocation location, Type type, float size)
 	{
 		this(location, type, Color.getColor(0xffffff), size);
 	}
@@ -33,7 +33,7 @@ public class Tile extends DisplayObject
 		this(location, type, color, 50);
 	}
 	
-	public Tile(ResourceLocation location, Type type, Color color, double size)
+	public Tile(ResourceLocation location, Type type, Color color, float size)
 	{
 		if(location != null) this.texture = new Texture(location);
 		this.color = color;

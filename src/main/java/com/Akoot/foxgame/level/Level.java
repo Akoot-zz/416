@@ -63,8 +63,8 @@ public class Level extends DisplayObject implements RenderListener, TickListener
 				for(int x = 0; x < image.getWidth(); x++)
 				{
 					int i = x + y * image.getHeight();
-					tiles[i].x = (image.getWidth() * tiles[i].size / 2.0) + (x * tiles[i].size);
-					tiles[i].y = (image.getHeight() * tiles[i].size / 2.0) + (y * tiles[i].size);
+					tiles[i].x = (float) ((image.getWidth() * tiles[i].size / 2.0) + (x * tiles[i].size));
+					tiles[i].y = (float) ((image.getHeight() * tiles[i].size / 2.0) + (y * tiles[i].size));
 				}
 			}
 			for(int i = 0; i < 10; i++)
