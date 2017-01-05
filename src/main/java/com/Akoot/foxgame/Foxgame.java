@@ -21,25 +21,17 @@ import static org.lwjgl.glfw.GLFW.glfwSwapInterval;
 import static org.lwjgl.glfw.GLFW.glfwTerminate;
 import static org.lwjgl.glfw.GLFW.glfwWindowHint;
 import static org.lwjgl.glfw.GLFW.glfwWindowShouldClose;
-import static org.lwjgl.opengl.GL11.GL_BLEND;
 import static org.lwjgl.opengl.GL11.GL_COLOR_BUFFER_BIT;
 import static org.lwjgl.opengl.GL11.GL_DEPTH_BUFFER_BIT;
 import static org.lwjgl.opengl.GL11.GL_FALSE;
-import static org.lwjgl.opengl.GL11.GL_ONE_MINUS_SRC_ALPHA;
-import static org.lwjgl.opengl.GL11.GL_SRC_ALPHA;
-import static org.lwjgl.opengl.GL11.GL_TEXTURE_2D;
 import static org.lwjgl.opengl.GL11.GL_TRUE;
-import static org.lwjgl.opengl.GL11.glBlendFunc;
 import static org.lwjgl.opengl.GL11.glClear;
 import static org.lwjgl.opengl.GL11.glClearColor;
-import static org.lwjgl.opengl.GL11.glEnable;
 import static org.lwjgl.system.MemoryUtil.NULL;
 
 import java.nio.ByteBuffer;
 
 import org.lwjgl.Sys;
-import org.lwjgl.glfw.GLFW;
-import org.lwjgl.glfw.GLFWCursorPosCallback;
 import org.lwjgl.glfw.GLFWErrorCallback;
 import org.lwjgl.glfw.GLFWKeyCallback;
 import org.lwjgl.glfw.GLFWvidmode;
@@ -65,23 +57,20 @@ public class Foxgame
 	/** Reference callback instances. */
 	private GLFWErrorCallback errorCallback;
 	private GLFWKeyCallback keyCallback;
-	private GLFWCursorPosCallback mouseCallback;
-
 	/* The window */
 	public long window;
 
 	/* Basic information */
-	public static final String version = "0.0.1";
-	public static final String name = "Foxgame", fullname = name + "-" + version;
+	public static final String name = "Foxgame", version = "0.0.0", fullname = name + "-" + version;
 
-	public final int initHeight = 700, initWidth = 1100;
+	public final int initHeight = 830, initWidth = 1360;
 
 	private static Foxgame game;
 	public User user;
 	public Gui currentScreen;
 	public static EventHandler eventHandler = new EventHandler();
 	public Level currentLevel;
-	public Camera camera;
+	public static Camera camera;
 	public static Stage stage;
 
 	private RenderEvent renderEvent;
@@ -92,7 +81,6 @@ public class Foxgame
 	{
 		/* Print message */
 		System.out.println("LWJGL " + Sys.getVersion() + " is working");
-		game = this;
 		renderEvent = new RenderEvent();
 		tickEvent = new TickEvent();
 		try
@@ -134,7 +122,7 @@ public class Foxgame
 
 		/* Setup a key callback. It will be called every time a key is pressed, repeated or released. */
 		glfwSetKeyCallback(window, keyCallback = new KeyboardHandler());
-		glfwSetCursorPosCallback(window, mouseCallback = new MouseHandler());
+		glfwSetCursorPosCallback(window, new MouseHandler());
 
 		/* Get primary monitor resolution */
 		ByteBuffer vidmode = glfwGetVideoMode(glfwGetPrimaryMonitor());
@@ -170,12 +158,14 @@ public class Foxgame
 	/** Main game loop */
 	public void loop()
 	{
-		GLContext.createFromCurrent();		
+		GLContext.createFromCurrent();
+		
 		/** Everything must be initiated AFTER this line */
-
+		
+		/** Bottom layer */
 		stage = new Stage(this);
-		//currentLevel = new Level(this);
-		//currentLevel.generate(new ResourceLocation("assets/textures/testlevel.png"));
+		
+		/** Mid layer */
 		EntityMob ghost = new EntityMob(this, "Ghost")
 		{
 			@Override
@@ -185,17 +175,14 @@ public class Foxgame
 			}
 		};
 		ghost.texture = new Texture(new ResourceLocation("assets/textures/player.png"));
-		ghost.x = 100;
-		ghost.y = 100;
+		ghost.x = (float) Math.random() * 100;
+		ghost.y = (float) Math.random() * 100;
 		user = new User(this, "Jake111");
-		//user.player.setScale(3);
-
-		//currentLevel.spawn(user.player);
-		//currentLevel.spawn(ghost);
-
+		
+		/** Top layer */
 		currentScreen = new GuiIngame(this);
 		camera = new Camera(this);
-		//camera.setSize(1920, 1080);
+		camera.setTarget(user.player);
 
 		/** glState anything here */
 		MouseHandler.showCursor(false);
@@ -284,16 +271,12 @@ public class Foxgame
 	{
 		/* Render everything else in the game */
 		eventHandler.dispatchEvent(renderEvent);
-		if(1 < 2)
-		{
-			camera.x = user.player.x - (camera.width / 2.0) + (user.player.width / 2.0);
-			camera.y = user.player.y - (camera.height / 2.0) + (user.player.height / 2.0);
-		}
 	}
 
-	/** Tick */
+	/** Tick! */
 	public void tick()
 	{
+		/* Do stuff per tick */
 		eventHandler.dispatchEvent(tickEvent);
 	}
 
@@ -302,7 +285,9 @@ public class Foxgame
 	{
 		/* Load native libraries */
 		SharedLibraryLoader.load();
+		
 		/* Launch the game */
-		new Foxgame().run();
+		game = new Foxgame();
+		game.run();
 	}
 }

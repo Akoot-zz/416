@@ -5,6 +5,7 @@ import java.util.List;
 import com.Akoot.foxgame.Foxgame;
 import com.Akoot.foxgame.User;
 import com.Akoot.foxgame.graphics.DisplayObject;
+import com.Akoot.foxgame.input.MouseHandler;
 import com.Akoot.foxgame.item.ItemRarity;
 import com.Akoot.foxgame.util.Color;
 import com.Akoot.foxgame.util.ResourceLocation;
@@ -48,9 +49,11 @@ public class Hat extends DisplayObject
 		
 		stage.drawRect(x, y, width, height, Color.getColor(0xff0000));
 
-		if(this.hitTestPoint(Foxgame.getFoxgame().camera.mouseX(), Foxgame.getFoxgame().camera.mouseY()))
+		Foxgame.getFoxgame();
+		if(this.hitTestPoint(MouseHandler.mouseX(), MouseHandler.mouseY()))
 		{
-			stage.drawRect((float) Foxgame.getFoxgame().camera.mouseX(), (float) Foxgame.getFoxgame().camera.mouseY(), 20F, 20F, color);
+			Foxgame.getFoxgame();
+			stage.drawRect((float) MouseHandler.mouseX(), (float) MouseHandler.mouseY(), 20F, 20F, color);
 		}
 	}
 }

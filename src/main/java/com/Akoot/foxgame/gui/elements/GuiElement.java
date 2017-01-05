@@ -13,11 +13,11 @@ public class GuiElement extends DisplayObject
 	
 	public GuiElement()
 	{
-		this.camera = Foxgame.getFoxgame().camera;
+		this.camera = Foxgame.camera;
 	}
 	
 	public boolean mouseHover()
 	{
-		return (MouseHandler.mouseX(camera) >= this.x && MouseHandler.mouseY(camera) >= this.y && MouseHandler.mouseX(camera) <= this.x + this.width && MouseHandler.mouseY(camera) <= this.y + this.height);
+		return (MouseHandler.mouseX() >= this.x && MouseHandler.mouseY() >= this.y && MouseHandler.mouseX() <= this.x + this.width && MouseHandler.mouseY() <= this.y + this.height);
 	}
 }

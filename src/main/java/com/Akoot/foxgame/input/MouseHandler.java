@@ -4,7 +4,6 @@ import org.lwjgl.glfw.GLFW;
 import org.lwjgl.glfw.GLFWCursorPosCallback;
 
 import com.Akoot.foxgame.Foxgame;
-import com.Akoot.foxgame.graphics.DisplayObject;
 
 public class MouseHandler extends GLFWCursorPosCallback
 {
@@ -25,15 +24,15 @@ public class MouseHandler extends GLFWCursorPosCallback
 		else GLFW.glfwSetInputMode(Foxgame.getFoxgame().window, GLFW.GLFW_CURSOR, GLFW.GLFW_CURSOR_NORMAL);
 	}
 	
-	public static double mouseX(DisplayObject o)
+	public static float mouseX()
 	{
-		double w = Foxgame.getFoxgame().camera.width / 2;
-		return (mouseX + o.x) - w + (o.width / 2);
+		float w = Foxgame.camera.width / 2.0F;
+		return (float) ((mouseX + Foxgame.camera.x) - w + (Foxgame.camera.width / 2));
 	}
 	
-	public static double mouseY(DisplayObject o)
+	public static float mouseY()
 	{
-		double h = Foxgame.getFoxgame().camera.height / 2;
-		return (mouseY + o.y) - h + (o.height / 2);
+		double h = Foxgame.camera.height / 2.0F;
+		return (float) ((mouseY + Foxgame.camera.y) - h + (Foxgame.camera.height / 2));
 	}
 }

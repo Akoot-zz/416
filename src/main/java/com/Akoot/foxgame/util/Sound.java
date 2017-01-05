@@ -9,6 +9,11 @@ public class Sound
 	public Sound(String location)
 	{
 		this.soundFile = new File(new ResourceLocation(location).getResourcePath());
-		//if(!this.soundFile.exists()) System.out.println("Sound file " + this.soundFile + " does not exist!");
+		if(!this.soundFile.exists()) System.out.println("Sound file " + this.soundFile + " does not exist!");
+	}
+	
+	public void play()
+	{
+		System.out.println("Playing: " + soundFile.getAbsolutePath());
 	}
 }

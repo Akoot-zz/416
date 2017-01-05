@@ -8,7 +8,6 @@ import static org.lwjgl.opengl.GL11.glOrtho;
 
 import com.Akoot.foxgame.Foxgame;
 import com.Akoot.foxgame.gui.Cursor;
-import com.Akoot.foxgame.input.MouseHandler;
 
 public class Camera extends DisplayObject
 {
@@ -20,17 +19,6 @@ public class Camera extends DisplayObject
 		this.target = this;
 		setSize(game.initWidth, game.initHeight);
 		cursor = new Cursor();
-		cursor.setTarget(this);
-	}
-	
-	public double mouseX()
-	{
-		return MouseHandler.mouseX(this);
-	}
-	
-	public double mouseY()
-	{
-		return MouseHandler.mouseY(this);
 	}
 	
 	public void setTarget(DisplayObject target)
