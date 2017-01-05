@@ -1,11 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
-	<classpathentry kind="src" path="src/main/java">
-		<attributes>
-			<attribute name="FROM_GRADLE_MODEL" value="true"/>
-		</attributes>
-	</classpathentry>
-	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.8"/>
-	<classpathentry kind="con" path="org.eclipse.buildship.core.gradleclasspathcontainer"/>
-	<classpathentry kind="output" path="bin"/>
+	<classpathentry path="bin" kind="output"/>
+	<classpathentry kind="src" path="src/main/java"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.8/"/>
+	<classpathentry sourcepath="C:/Users/Akoot/.gradle/caches/modules-2/files-2.1/org.lwjgl/lwjgl/3.0.0a/57d9190d440801a69f56257b3445dfb81281614f/lwjgl-3.0.0a-sources.jar" kind="lib" path="C:/Users/Akoot/.gradle/caches/modules-2/files-2.1/org.lwjgl/lwjgl/3.0.0a/788064e90fc99d6202b89c487ac525cb336a8dd3/lwjgl-3.0.0a.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Akoot/.gradle/caches/modules-2/files-2.1/org.lwjgl/lwjgl-platform/3.0.0a/4d92e1b7c9c3077209a8cb2531cd803837b685d5/lwjgl-platform-3.0.0a-natives-windows.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Akoot/.gradle/caches/modules-2/files-2.1/org.lwjgl/lwjgl-platform/3.0.0a/23d98c0b5a1ca12726d47fe8cccaf323d2ba30a9/lwjgl-platform-3.0.0a-natives-linux.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Akoot/.gradle/caches/modules-2/files-2.1/org.lwjgl/lwjgl-platform/3.0.0a/85281dee834fb29b530148f354b704699e03c5b7/lwjgl-platform-3.0.0a-natives-osx.jar"/>
+	<classpathentry sourcepath="C:/Users/Akoot/.gradle/caches/modules-2/files-2.1/org.apache.commons/commons-lang3/3.4/b49dafc9cfef24c356827f322e773e7c26725dd2/commons-lang3-3.4-sources.jar" kind="lib" path="C:/Users/Akoot/.gradle/caches/modules-2/files-2.1/org.apache.commons/commons-lang3/3.4/5fe28b9518e58819180a43a850fbc0dd24b7c050/commons-lang3-3.4.jar"/>
+	<classpathentry sourcepath="C:/Users/Akoot/.gradle/caches/modules-2/files-2.1/com.google.guava/guava/19.0/91a4d115400e904f22b03a78deb355e9ea803cd4/guava-19.0-sources.jar" kind="lib" path="C:/Users/Akoot/.gradle/caches/modules-2/files-2.1/com.google.guava/guava/19.0/6ce200f6b23222af3d8abb6b6459e6c44f4bb0e9/guava-19.0.jar"/>
+	<classpathentry sourcepath="C:/Users/Akoot/.gradle/caches/modules-2/files-2.1/com.google.code.findbugs/jsr305/3.0.0/936f4430478909ed7b138d42f9ad73c919a87b26/jsr305-3.0.0-sources.jar" kind="lib" path="C:/Users/Akoot/.gradle/caches/modules-2/files-2.1/com.google.code.findbugs/jsr305/3.0.0/5871fb60dc68d67da54a663c3fd636a10a532948/jsr305-3.0.0.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Akoot/Dev/Java/Games/Foxgame/libs/PNGDecoder.jar"/>
 </classpath>
