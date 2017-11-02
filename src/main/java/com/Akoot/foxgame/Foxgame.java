@@ -37,6 +37,7 @@ import org.lwjgl.glfw.GLFWKeyCallback;
 import org.lwjgl.glfw.GLFWvidmode;
 import org.lwjgl.opengl.GLContext;
 
+import com.Akoot.foxgame.config.GameSettings;
 import com.Akoot.foxgame.entity.EntityMob;
 import com.Akoot.foxgame.event.EventHandler;
 import com.Akoot.foxgame.event.events.RenderEvent;
@@ -72,6 +73,7 @@ public class Foxgame
 	public Level currentLevel;
 	public static Camera camera;
 	public static Stage stage;
+	public GameSettings settings;
 
 	private RenderEvent renderEvent;
 	private TickEvent tickEvent;
@@ -159,12 +161,13 @@ public class Foxgame
 	public void loop()
 	{
 		GLContext.createFromCurrent();
-		
+
 		/** Everything must be initiated AFTER this line */
-		
+		settings = new GameSettings();
+
 		/** Bottom layer */
 		stage = new Stage(this);
-		
+
 		/** Mid layer */
 		EntityMob ghost = new EntityMob(this, "Ghost")
 		{
@@ -177,8 +180,10 @@ public class Foxgame
 		ghost.texture = new Texture(new ResourceLocation("assets/textures/player.png"));
 		ghost.x = (float) Math.random() * 100;
 		ghost.y = (float) Math.random() * 100;
+
+
 		user = new User(this, "Jake111");
-		
+
 		/** Top layer */
 		currentScreen = new GuiIngame(this);
 		camera = new Camera(this);
@@ -198,12 +203,15 @@ public class Foxgame
 		/* Nanoseconds per tick */
 		double nsPerTick = 1000000000D / 60D; //60 ticks per second
 		/* Nanoseconds per frame */
-		double nsPerFrame = 1000000000D / 60D; //60 frames per second
+		double nsPerFrame = 1000000000D / settings.maxFPS; //max frames per second
 
 		/* Get milliseconds */
 		long lastTimer = System.currentTimeMillis();
 		double deltaTicks = 0;
 		double deltaFrames = 0;
+
+		int frames = 0;
+		int ticks = 0;
 
 		/* Main game loop */
 		while (glfwWindowShouldClose(window) == GL_FALSE)
@@ -225,32 +233,38 @@ public class Foxgame
 			while (deltaTicks >= 1)
 			{
 				tick();
+				ticks++;
 				deltaTicks -= 1;
 			}
 
 			/* Should the game render */
 			while(deltaFrames >= 1)
 			{
+				if(!settings.capFrames)
+				{
+					/* Clear frame buffer */
+					glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);	
+					render();
+					frames++;
+
+					/* Swap color buffers */
+					glfwSwapBuffers(window);
+
+					/* Poll for window events */
+					glfwPollEvents();
+				}
 				deltaFrames -= 1;
 				shouldRender = true;
 			}
 
-			/* Sleep a little */
-			try
-			{
-				Thread.sleep(2);
-			}
-			catch (InterruptedException e)
-			{
-				e.printStackTrace();
-			}
-
 			/* Render ONLY if it should */
-			if (shouldRender)
+			if (settings.capFrames && shouldRender)
 			{
 				/* Clear frame buffer */
 				glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);	
 				render();
+				frames++;
+
 				/* Swap color buffers */
 				glfwSwapBuffers(window);
 
@@ -262,6 +276,9 @@ public class Foxgame
 			if (System.currentTimeMillis() - lastTimer >= 1000)
 			{
 				lastTimer += 1000;
+				System.out.println(frames + " FPS; " + ticks + " ticks");
+				frames = 0;
+				ticks = 0;
 			}
 		}
 	}
@@ -285,7 +302,7 @@ public class Foxgame
 	{
 		/* Load native libraries */
 		SharedLibraryLoader.load();
-		
+
 		/* Launch the game */
 		game = new Foxgame();
 		game.run();

@@ -46,7 +46,7 @@ public class Clothes extends DisplayObject
 	@Override
 	public void render()
 	{
-		stage.drawTexture(x - (width * scaleX / 4), y, width * scaleX, height * scaleY, texture_c, color);
+		stage.drawTexture(x - (scaleX < 0 ? width * scaleX : 0), y, width * scaleX, height * scaleY, texture_c, color);
 		//stage.drawTexture(x, y - height / 2, width, height, texture_v);
 	}
 }

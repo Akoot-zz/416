@@ -18,6 +18,7 @@ public class Entity extends DisplayObject implements TickListener
 	protected double speedl, speedr;
 	public double speed;
 	protected double inertia;
+	protected double friction;
 	protected double grav;
 	protected boolean solid;
 	protected double lastX, lastY;

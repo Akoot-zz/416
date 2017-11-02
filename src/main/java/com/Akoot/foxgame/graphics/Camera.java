@@ -34,7 +34,7 @@ public class Camera extends DisplayObject
 		glOrtho(x, x + width, y + height, y, 1, -1);
 		glMatrixMode(GL_MODELVIEW);
 		
-		x = target.x - (width / 2.0F) + (target.width / 2.0F);
-		y = target.y - (height / 2.0F) + (target.height / 2.0F);
+		x = (float) (target.x - (float) (width / 2.0F) + (float) (target.width / 2.0F));
+		y = (float) (target.y - (float) (height / 2.0F) + (float) (target.height / 2.0F));
 	}
 }

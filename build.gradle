@@ -6,6 +6,7 @@ project.ext.lwjglVersion = "3.0.0a"
 
 repositories {
     mavenCentral()
+    mavenLocal()
     maven { url "https://oss.sonatype.org/content/repositories/snapshots/" }
 }
 
@@ -19,7 +20,8 @@ dependencies {
 	compile "org.lwjgl:lwjgl-platform:${lwjglVersion}:natives-linux"
 	compile "org.lwjgl:lwjgl-platform:${lwjglVersion}:natives-osx"
 	compile 'org.apache.commons:commons-lang3:3.4'
-	compile 'com.google.guava:guava:19.0'
-	compile 'com.google.code.findbugs:jsr305:3.0.0'
-	compile files( 'libs/PNGDecoder.jar' )
+	//compile 'com.google.guava:guava:19.0'
+	//compile 'com.google.code.findbugs:jsr305:3.0.0'
+	compile group: 'com.Akoot', name: 'Akoot-Util', version: '0.0.9a'
+	compile files('libs/PNGDecoder.jar')
 }

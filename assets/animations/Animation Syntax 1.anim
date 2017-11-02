@@ -1,0 +1,15 @@
+# <name of sequence>: 
+# $(<start frame #>[-<end frame #>][&<start frame #>[-<end frame #>]]:<FPS>[,<...more>])
+# ?(<chance>%<start frame >[-<end frame #>]:<replace frame #>[,<...more>])
+# ^<start frame # for main loop>[-<end frame # for main loop sequence>]
+
+# Frames 1 to 2 and 4 to 5 are 20 FPS
+# Frame 3 will only be 15 FPS
+# Frames 1 to 5 and 10 to 20 will be played randomly at frame 1 with a 10% chance
+# Frames 50 to 55 will be played at frame 15 with a 5% chance
+# Frames 1 to 20 are the default loop sequence
+idle: $(1-2&4-55:20,3:15)?(10%21-50:1,5%51-55:15)^1-20
+
+# Frames 1 to 30 will all be 20 FPS
+# Frame 5 is the starting frame for the loop
+walk: $(1-30:20)^5

@@ -1,0 +1,3 @@
+max-fps: 60
+ui-color: "#FF0000"
+cap-frames: false

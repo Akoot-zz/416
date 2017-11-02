@@ -8,6 +8,6 @@ public class Ushanka extends Hat
 	{
 		this.displayname = "Ushanka";
 		this.description = "Made from expensive sheepskin";
-		this.rarity = ItemRarity.UNCOMMON;
+		this.rarity = ItemRarity.RARE;
 	}
 }

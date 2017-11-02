@@ -24,6 +24,7 @@ public class EntityPlayer extends EntityLiving
 		this.color = Color.getColor(0xffffff);
 		this.maxHunger = 50.0;
 		this.hunger = 45.0;
+		this.friction = 1;
 		this.setClothing();
 		System.out.println(this.x + ":" + this.y);
 	}
@@ -33,7 +34,7 @@ public class EntityPlayer extends EntityLiving
 		Shirt shirt = new Shirt();
 		Pants pants = new Pants();
 		Boots boots = new Boots();
-		Hair hair = new Hair("1");
+		Hair hair = new Hair("2");
 		
 		if(1 < 2) //if user does not have custom clothes
 		{
@@ -50,8 +51,8 @@ public class EntityPlayer extends EntityLiving
 		
 		if(1 < 2) //if user has hat
 		{
-			Hat hat = new Ushanka();
-			hat.setColor(Color.getColor(0x343434));
+			Hat hat = new BaseballCap();
+			hat.setColor(Color.getRandomColor());
 			this.setHat(hat);
 		}
 	}
@@ -79,11 +80,23 @@ public class EntityPlayer extends EntityLiving
 	{
 		//System.out.println("tick");
 		//System.out.println("is ther a stage? " + (stage != null ? "yes!" : "no..."));
-		int speed = KeyboardHandler.isKeyDown(32) ? 5 : 2;
-		if(KeyboardHandler.isKeyDown(68) || KeyboardHandler.isKeyDown(262)) {x += speed; scaleX = defScale;}
-		if(KeyboardHandler.isKeyDown(65) || KeyboardHandler.isKeyDown(263)) {x -= speed; scaleX = -(defScale);}
+		
+		
+		
+		double speed = KeyboardHandler.isKeyDown(32) ? 5 : 1.25;
+		if(KeyboardHandler.isKeyDown(68) || KeyboardHandler.isKeyDown(262)) {x += (speed * friction); scaleX = defScale; inertia += speed;}
+		if(KeyboardHandler.isKeyDown(65) || KeyboardHandler.isKeyDown(263)) {x -= (speed * friction); scaleX = -(defScale); inertia -= speed;}
 		if(KeyboardHandler.isKeyDown(83) || KeyboardHandler.isKeyDown(264)) y += speed;
 		if(KeyboardHandler.isKeyDown(87) || KeyboardHandler.isKeyDown(265)) y -= speed;
+		
+		if(inertia > 10) inertia = 10;
+		else if(inertia < -10) inertia = -10;
+		
+		if(inertia < 0) inertia ++;
+		else if(inertia > 0) inertia --;
+		
+		x += inertia;
+		
 
 		//		for(EntityLiving entity: game.currentLevel.getLivingEntities())
 		//		{
@@ -99,7 +112,11 @@ public class EntityPlayer extends EntityLiving
 	public void renderBody()
 	{
 		//stage.drawTexture(x, y, width * scale, height * scale, texture, color);
-		stage.drawTexture(x, y, width * scaleX, height * scaleY, texture);
+		stage.drawTexture(x - (scaleX < 0 ? width * scaleX : 0), y, width * scaleX, height * scaleY, texture);
+		
+		//Draw hitbox
+		stage.drawRect(x, y, width, height, Color.getColor(0x00ff00, 0.5));
+		
 		for(Clothes clothes: clothing)
 		{
 			clothes.x = x;

@@ -24,8 +24,8 @@ public class Hat extends DisplayObject
 	
 	public Hat()
 	{
-		this.width = 100;
-		this.height = 100;
+		this.width = 50;
+		this.height = 50;
 		this.color = Color.getColor(0xffffff);
 		this.texture_c = new Texture(new ResourceLocation("assets/textures/items/hats/%s/%s_c.png".replaceAll("%s", getClass().getSimpleName())));
 		this.texture_v = new Texture(new ResourceLocation("assets/textures/items/hats/%s/%s_v.png".replaceAll("%s", getClass().getSimpleName())));
@@ -44,10 +44,13 @@ public class Hat extends DisplayObject
 	@Override
 	public void render()
 	{
-		stage.drawTexture(x - (width * scaleX / 4), y - height * scaleY / 2, width * scaleX, height * scaleY, texture_c, color);
-		stage.drawTexture(x - (width * scaleX / 4), y - height * scaleY / 2, width * scaleX, height * scaleY, texture_v);
+		x = x - (scaleX < 0 ? width * scaleX : 0);
+		y = y - (scaleY < 0 ? height * scaleY : 0);
+		stage.drawTexture(x, y, 100 * scaleX, 100 * scaleY, texture_c, color);
+		stage.drawTexture(x, y, 100 * scaleX, 100 * scaleY, texture_v);
 		
-		stage.drawRect(x, y, width, height, Color.getColor(0xff0000));
+		//Draw hitbox
+		stage.drawRect(x, y, width, height, Color.getColor(0xff0000, 0.5));
 
 		Foxgame.getFoxgame();
 		if(this.hitTestPoint(MouseHandler.mouseX(), MouseHandler.mouseY()))
